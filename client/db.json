@@ -1,0 +1,29 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "name": "Bambang"
+        },
+        {
+            "id": 2,
+            "name": "Bunga"
+        }
+    ],
+    "trips": [
+        {
+            "id": 1,
+            "routes": ["A to B", "B to C", "C to D"],
+            "UserId": 2
+        },
+        {
+            "id": 2,
+            "routes": ["F to G", "G to H", "H to I", "I to J"],
+            "UserId": 1
+        },
+        {
+            "id": 3,
+            "routes": ["Z to X", "X to W", "W to V", "V to U"],
+            "UserId": 1
+        }
+    ]
+}
