@@ -4,12 +4,12 @@
   "description": "",
   "main": "test.js",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "es6-promise": "^4.2.8",
     "express": "^4.17.1",
-    "pg": "^8.3.0",
-    "request": "^2.88.2",
-    "sequelize": "^6.3.3"
+    "mongodb": "^3.5.9",
+    "request": "^2.88.2"
   },
   "devDependencies": {},
   "scripts": {

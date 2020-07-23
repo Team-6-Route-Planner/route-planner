@@ -4,11 +4,11 @@ var request = require("request");
 const API_KEY = process.env.GOOGLE_MAPS_API_KEY || "";
 
 var places = [
-  "Sawangan, Depok",
-  "Tambun selatan, Bekasi",
-  "Cibinong, Bogor",
+  "Jl. Sultan Iskandar Muda No.7, Kby. Lama Sel., Kec. Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12240",
   "Ciwidey, Bandung",
-  "Tanggerang, Banten",
+  "Cibinong, Bogor",
+  "Tambun selatan, Bekasi",
+  "Pondok Indah Mall"
 ];
 var promises = [];
 var koordinat = [];
@@ -99,7 +99,7 @@ Promise.all(promises)
     });
     return placesOrdered;
   })
-  .then((data) => {
-    console.log(data);
-  })
-  .catch(console.error);
+  // .then((data) => {
+  //   console.log(data);
+  // })
+  // .catch(console.error);
