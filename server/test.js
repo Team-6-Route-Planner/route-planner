@@ -1,7 +1,7 @@
 require("es6-promise").polyfill();
 var request = require("request");
 const API_KEY =
-  process.env.GOOGLE_MAPS_API_KEY || "AIzaSyDUPeFL6NZ2vTIbI34a7og3FNrpGR3b0cs";
+  process.env.GOOGLE_MAPS_API_KEY || "";
 
 var places = [
   "Sawangan, Depok",
