@@ -1,14 +1,15 @@
 const Trip = require("../models/trip");
 const shortestTrip = require("../helpers/shortestTrip");
 class Controller {
-  static add(req, res, next) {
+  static async add(req, res, next) {
     const { addresses, userId } = req.body;
+    let trip = await shortestTrip(addresses);
     Trip.create({
-      addresses,
+      trip,
       userId: Number(userId),
       status: false,
     })
-      .then((data) => res.status(200).json(data))
+      .then(async (data) => res.status(200).json(data.ops[0]))
       .catch(console.log);
   }
   static list(req, res, next) {
