@@ -4,12 +4,11 @@ var request = require("request");
 const API_KEY = process.env.GOOGLE_MAPS_API_KEY || "";
 
 var places = [
-  "Jl. Sultan Iskandar Muda No.6, Kby. Lama Sel., Kec. Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12240",
+  "Jl. Sultan Iskandar Muda No.7, Kby. Lama Sel., Kec. Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12240",
   "Ciwidey, Bandung",
   "Cibinong, Bogor",
   "Tambun selatan, Bekasi",
-  "Pondok Indah Mall",
-  "Jl. Sultan Iskandar Muda No.7, Kby. Lama Sel., Kec. Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12240"
+  "Pondok Indah Mall"
 ];
 var promises = [];
 var koordinat = [];
