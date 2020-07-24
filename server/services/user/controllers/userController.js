@@ -15,7 +15,7 @@ class Controller {
         })
         .then(data => {
             if(data) {
-                res.status(201).json(data)
+                res.status(201).json(data.ops[0]);
             }
         })
         .catch(err => console.log(err));
@@ -29,11 +29,11 @@ class Controller {
             } else if(!bcrypt.compareSync(password, data.password)){
                 res.status(400).json({ message: "Wrong password" });
             } else {
-                // const access_token = jwt.sign({
-                //     _id: data._id,
-                //     username: data.username
-                // }, process.env.JWT);
-                res.status(200).json({ message: "Login success", _id: data._id, username: data.username })
+                const token = jwt.sign({
+                    _id: data._id,
+                    username: data.username
+                }, process.env.JWT);
+                res.status(200).json({ message: "Login success", _id: data._id, username: data.username, token })
             }
         })
         .catch(err => res.status(500).json(err));

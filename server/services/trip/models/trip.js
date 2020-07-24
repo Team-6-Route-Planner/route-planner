@@ -12,8 +12,8 @@ class TripModel {
   static findCurrent(id) {
     return Trip.findOne({ userId: id, status: false });
   }
-  static findTrip(id) {
-    return Trip.findOne({ _id: ObjectId(id) });
+  static findDones(id) {
+    return Trip.find({ userId: id, status: true }).toArray();
   }
   static update(id, updatedTrip) {
     return Trip.findOneAndUpdate(

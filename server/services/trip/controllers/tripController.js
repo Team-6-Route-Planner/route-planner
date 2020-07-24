@@ -5,8 +5,8 @@ class Controller {
     const { addresses, userId } = req.body;
     let trip = await shortestTrip(addresses);
     Trip.create({
-      trip,
-      userId: Number(userId),
+      routes: trip,
+      userId: userId,
       status: false,
     })
       .then(async (data) => res.status(200).json(data.ops[0]))
@@ -19,8 +19,10 @@ class Controller {
   }
   static listOneCurrent(req, res, next) {
     const { userId } = req.params;
-    Trip.findCurrent(Number(userId))
-      .then((data) => res.status(200).json(data))
+    Trip.findCurrent(userId)
+      .then((data) => {
+        res.status(200).json(data)
+      })
       .catch(console.log);
   }
   static edit(req, res, next) {
@@ -30,16 +32,13 @@ class Controller {
       .then((data) => res.status(200).json(data))
       .catch(console.log);
   }
-  static getShortestTrip(req, res, next) {
-    const { tripId } = req.params;
-    console.log(req.params.tripId);
-    Trip.findTrip(tripId)
-      .then(async (data) => {
-        let trip = await shortestTrip(data.addresses);
-        console.log(trip);
-        res.status(200).json(trip);
-      })
-      .catch(console.log);
+  static showHistory(req, res, next) {
+    const { userId } = req.params;
+    Trip.findDones(userId)
+    .then((data) => {
+      res.status(200).json(data)
+    })
+    .catch(console.log);
   }
 }
 module.exports = Controller;
