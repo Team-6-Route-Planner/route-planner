@@ -15,7 +15,7 @@ mongo.connect(function(err) {
         app.use('/', require('./routes'));
 
         app.listen(PORT, function() {
-            console.log(`Server running on port ${PORT}`);
+            console.log(`Server trip running on port ${PORT}`);
         });
     }
 });

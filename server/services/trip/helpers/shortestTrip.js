@@ -99,7 +99,7 @@ Promise.all(promises)
     });
     return placesOrdered;
   })
-  // .then((data) => {
-  //   console.log(data);
-  // })
-  // .catch(console.error);
+  .then((data) => {
+    console.log(data);
+  })
+  .catch(console.error);

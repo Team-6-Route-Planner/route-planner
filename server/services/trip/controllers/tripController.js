@@ -1,6 +1,6 @@
 const Trip = require('../models/trip');
 //disini require shortestTrip
-const shortestTrip = require('../helpers/shortestTrip');
+// const shortestTrip = require('../helpers/shortestTrip');
 class Controller {
     static add(req, res, next) {
         const { addresses, userId } = req.body // addresses buat dilempar ke shortestTrip
