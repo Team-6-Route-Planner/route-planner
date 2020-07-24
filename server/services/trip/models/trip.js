@@ -1,5 +1,5 @@
-const { getDatabase } = require('../configs/mongo');
-const Trip = getDatabase().collection(process.env.COLLECTION_NAME);
+const db = require('../configs/mongo');
+const Trip = db.collection(process.env.COLLECTION_NAME);
 const { ObjectId } = require('mongodb');
 
 class TripModel {
