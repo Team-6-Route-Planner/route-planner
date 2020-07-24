@@ -3,15 +3,56 @@ require("es6-promise").polyfill();
 var request = require("request");
 const API_KEY = process.env.GOOGLE_MAPS_API_KEY || "";
 
-var places = [
-  "Jl. Sultan Iskandar Muda No.7, Kby. Lama Sel., Kec. Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12240",
-  "Ciwidey, Bandung",
-  "Cibinong, Bogor",
-  "Tambun selatan, Bekasi",
-  "Pondok Indah Mall"
-];
-var promises = [];
-var koordinat = [];
+async function shortestTrip(listAddress) {
+  var places = [];
+  var promises = [];
+  var koordinat = [];
+  places = listAddress;
+
+  places.forEach(function (place) {
+    promises.push(
+      _fetch({
+        url: url("geocode", place),
+        json: true,
+      }).then(function (response) {
+        return response.body;
+      })
+    );
+  });
+  const result = await Promise.all(promises)
+    .then(function (addresses) {
+      var coords = addresses.map(function (address) {
+        koordinat.push({
+          ...address.results[0].geometry.location,
+          address: address.results[0].formatted_address,
+        });
+        return [
+          address.results[0].geometry.location.lat,
+          address.results[0].geometry.location.lng,
+        ].join(",");
+      });
+
+      return _fetch({
+        url: url("directions", coords),
+        json: true,
+      }).then(function (response) {
+        return response.body;
+      });
+    })
+    .then(function (data) {
+      var waypointOrder = data.routes[0].waypoint_order;
+      var placesOrdered = waypointOrder.map(function (orderIdx) {
+        return koordinat[orderIdx];
+      });
+      return placesOrdered;
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch(console.error);
+  console.log(result);
+  return result;
+}
 
 var _fetch = function (data) {
   return new Promise(function (resolve, reject) {
@@ -63,43 +104,5 @@ function url(name, data) {
       );
   }
 }
-places.forEach(function (place) {
-  promises.push(
-    _fetch({
-      url: url("geocode", place),
-      json: true,
-    }).then(function (response) {
-      return response.body;
-    })
-  );
-});
-Promise.all(promises)
-  .then(function (addresses) {
-    var coords = addresses.map(function (address) {
-      koordinat.push({
-        ...address.results[0].geometry.location,
-        address: address.results[0].formatted_address,
-      });
-      return [
-        address.results[0].geometry.location.lat,
-        address.results[0].geometry.location.lng,
-      ].join(",");
-    });
-    return _fetch({
-      url: url("directions", coords),
-      json: true,
-    }).then(function (response) {
-      return response.body;
-    });
-  })
-  .then(function (data) {
-    var waypointOrder = data.routes[0].waypoint_order;
-    var placesOrdered = waypointOrder.map(function (orderIdx) {
-      return koordinat[orderIdx];
-    });
-    return placesOrdered;
-  })
-  .then((data) => {
-    console.log(data);
-  })
-  .catch(console.error);
+
+module.exports = shortestTrip;
