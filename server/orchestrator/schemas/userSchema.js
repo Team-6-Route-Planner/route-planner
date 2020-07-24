@@ -6,21 +6,18 @@ const typeDefs = gql`
     type User {
         _id: ID
         username: String
-    }
-    type UserInput {
-        username: String
-        password: String
+        token: String
     }
     extend type Mutation {
-        register(newUser: UserInput): User
-        login(user: UserInput): User
+        register(username: String, password: String): User
+        login(username: String, password: String): User
     }
 `;
 
 const resolvers = {
     Mutation: {
         register: (_, args) => {
-            const { username, password } = args.newUser;
+            const { username, password } = args;
             return axios({
                 method: 'post',
                 url: `${baseUrl}/register`,
@@ -31,7 +28,7 @@ const resolvers = {
             })
         },
         login: (_, args) => {
-            const { username, password } = args.user;
+            const { username, password } = args;
             return axios({
                 method: 'post',
                 url: `${baseUrl}/login`,

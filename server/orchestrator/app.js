@@ -2,7 +2,7 @@ if(process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 const { ApolloServer, gql, makeExecutableSchema } = require('apollo-server');
-// const userSchema = require('./schemas/userSchema');
+const userSchema = require('./schemas/userSchema');
 const tripSchema = require('./schemas/tripSchema');
 
 const typeDefs = gql`
@@ -12,11 +12,11 @@ const typeDefs = gql`
 const schema = makeExecutableSchema({
     typeDefs: [
         typeDefs,
-        // userSchema.typeDefs,
+        userSchema.typeDefs,
         tripSchema.typeDefs,
     ],
     resolvers: [
-        // userSchema.resolvers,
+        userSchema.resolvers,
         tripSchema.resolvers,
     ],
 });
