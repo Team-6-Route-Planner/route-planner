@@ -1,27 +1,34 @@
 import React from "react";
-
+import { ApolloProvider } from '@apollo/client'
 import {
-  BrowserRouter as Router, Switch, Route, Link
+  BrowserRouter as Router, Switch, Route
 } from "react-router-dom"
+import { Container } from 'react-bootstrap';
+// import Apollo Client
+import client from './config/graphql';
+
+// import bootstrap css
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Navbar from './components/Navbar';
 import Home from './pages/Home.js'
 import Track from './pages/Track.js'
 
 export default function App() {
-  return(
-    <div className="app">
+  return (
+    <ApolloProvider client={client}>
       <Router>
-        <div className="Header container-fluid">
-          <header className="d-flex justify-content-around">
-            <Link to="/">Home</Link> &nbsp;|&nbsp;
-            <Link to="/track">Track Courier</Link>
-          </header>
-        </div>
-        <hr/>
-        <Switch>
-            <Route exact path="/" component={Home}></Route>
-            <Route exact path="/track" component={Track}></Route>
-        </Switch>
+        <Navbar />
+        <Container>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route exact path="/track">
+              <Track />
+            </Route>
+          </Switch>
+        </Container>
       </Router>
-    </div>
-  )
+    </ApolloProvider>
+  );
 }
