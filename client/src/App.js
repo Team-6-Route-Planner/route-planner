@@ -3,10 +3,9 @@ import { ApolloProvider } from '@apollo/client'
 import {
   BrowserRouter as Router, Switch, Route
 } from "react-router-dom"
-import { Container } from 'react-bootstrap';
 // import Apollo Client
 import client from './config/graphql';
-
+import {Container} from 'react-bootstrap'
 // import bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './components/Navbar';

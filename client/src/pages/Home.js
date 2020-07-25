@@ -36,7 +36,7 @@ export default function Home(){
 		  console.log(dataSubmission);
 		  actionSubmit({
 		    variables: {
-		      data: dataSubmission,
+		      trip: dataSubmission,
 		    },
 		  })
 		    .then((_) => {
