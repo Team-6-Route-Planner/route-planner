@@ -1,11 +1,12 @@
 import React,{useState} from "react"
 import { useHistory } from 'react-router-dom'
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { Form, Button, Row, Col } from 'react-bootstrap'
-import {ADD_TRIP} from '../queries/trip.js'
+import {ADD_TRIP, FETCH_USERS} from '../queries/trip.js'
 
 export default function Home(){
 	const history = useHistory();
+	const dataUser = useQuery(FETCH_USERS)
 	const [actionSubmit] = useMutation(ADD_TRIP)
 
 	const [form, setForm] = useState({
@@ -32,7 +33,7 @@ export default function Home(){
 
 		const submitAdd = (event) => {
 		  event.preventDefault();
-		  const dataSubmission = { ...form };
+		  let dataSubmission = { ...form };
 		  console.log(dataSubmission, '<<< datasub');
 		  actionSubmit({
 		    variables: {
@@ -41,6 +42,7 @@ export default function Home(){
 		    },
 		  })
 		    .then((_) => {
+
 		      history.push('/');
 		    })
 		    .catch((err) => console.log(err));
@@ -50,16 +52,31 @@ export default function Home(){
 	  <>
 	  	  <center><h3 className="mt-4">Welcome to Admin Page</h3></center>
 	  	  <Form className="mt-5" onSubmit={submitAdd}>
+	  	  	<Form.Group as={Row}>
+			  <Form.Label column sm="3">
+			    Petugas Kurir
+			  </Form.Label>
+			  <Col sm="5">
+				<Form.Control as="select">
+				  <option selected disabled>----------------------- Pilih kurir ------------------------</option>
+				  {
+				  	dataUser.map((elem, idx) =>(
+				  	  <option key={idx} value={elem}>{dataUser.username}</option>
+				  	))
+				  }
+				</Form.Control>
+			  </Col>
+			</Form.Group>
 
 	        <Form.Group as={Row}>
 	          <Form.Label column sm="3">
-	            Addresses
+	            Alamat Paket
 	          </Form.Label>
 	          <Col sm="5">
 	            <Form.Control type="text" value={address} onChange={changeAddress} placeholder="e.g: Jl. Kp. Kelapa rt 07/012 Pabuaran, Bojong Gede" />
 	          </Col>
 	          <Col sm="4">
-	            <Button onClick={addAddress} variant="outline-info">Add Address</Button>
+	            <Button onClick={addAddress} variant="outline-info">Tambah Alamat</Button>
 	          </Col>
 	        </Form.Group>
 
