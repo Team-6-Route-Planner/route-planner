@@ -1,5 +1,5 @@
 const db = require('../configs/mongo');
-const User = db.collection(process.env.COLLECTION_NAME);
+const User = db.collection(process.env.USER_COLLECTION_NAME);
 const { ObjectId } = require('mongodb');
 
 class UserModel {

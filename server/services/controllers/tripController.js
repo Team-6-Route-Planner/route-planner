@@ -52,7 +52,7 @@ class Controller {
   static edit(req, res, next) {
     const { id } = req.params;
     const { status } = req.body;
-    Trip.update(id, { status })
+    Trip.update(id, { status: status === 'true' })
       .then((data) => res.status(200).json(data.value))
       .catch(console.log);
   }
