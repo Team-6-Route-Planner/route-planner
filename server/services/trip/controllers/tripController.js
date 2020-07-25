@@ -9,7 +9,7 @@ class Controller {
       userId: userId,
       status: false,
     })
-      .then(async (data) => res.status(200).json(data.ops[0]))
+      .then(async (data) => res.status(201).json(data.ops[0]))
       .catch(console.log);
   }
   static list(req, res, next) {
@@ -29,7 +29,7 @@ class Controller {
     const { id } = req.params;
     const { status } = req.body;
     Trip.update(id, { status })
-      .then((data) => res.status(200).json(data))
+      .then((data) => res.status(200).json(data.value))
       .catch(console.log);
   }
   static showHistory(req, res, next) {
