@@ -4,13 +4,18 @@ class Controller {
   static async add(req, res, next) {
     const { addresses, userId } = req.body;
     let trip = await shortestTrip(addresses);
-    Trip.create({
-      routes: trip,
-      userId: userId,
-      status: false,
-    })
-      .then(async (data) => res.status(201).json(data.ops[0]))
-      .catch(console.log);
+    if(!Array.isArray(trip)){
+      res.status(400).json({ message: 'Wrong address'})
+      // console.log('Wrong Address');
+    } else {
+      Trip.create({
+        routes: trip,
+        userId: userId,
+        status: false,
+      })
+        .then(async (data) => res.status(201).json(data.ops[0]))
+        .catch(console.log);
+    }
   }
   static list(req, res, next) {
     Trip.findAll()

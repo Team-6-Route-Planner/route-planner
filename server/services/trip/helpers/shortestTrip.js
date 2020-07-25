@@ -1,7 +1,6 @@
 require("dotenv").config();
 require("es6-promise").polyfill();
 var request = require("request");
-const { list } = require("../controllers/tripController");
 const API_KEY = process.env.GOOGLE_MAPS_API_KEY || "";
 
 async function shortestTrip(listAddress) {
@@ -50,7 +49,7 @@ async function shortestTrip(listAddress) {
     .then((data) => {
       return data;
     })
-    .catch(console.error);
+    .catch(err => err);
   // console.log(result);
   return result;
 }

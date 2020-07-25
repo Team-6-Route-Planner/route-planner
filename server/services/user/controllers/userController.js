@@ -36,7 +36,7 @@ class Controller {
                 res.status(200).json({ message: "Login success", _id: data._id, username: data.username, token })
             }
         })
-        .catch(err => res.status(500).json(err));
+        .catch(err => console.log(err));
     }
 }
 module.exports = Controller;
