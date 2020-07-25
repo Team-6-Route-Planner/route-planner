@@ -11,7 +11,9 @@ describe('SUCCESS /register', function() {
         .then(response => {
             const { body, status } = response;
             expect(status).toBe(201);
-            expect(body).toHaveProperty('insertedId', expect.any(String));
+            expect(body).toHaveProperty('_id', expect.any(String));
+            expect(body).toHaveProperty('username', 'test');
+            expect(body).toHaveProperty('password', expect.any(String));
             done();
         })
     });
@@ -60,6 +62,21 @@ describe('FAIL /login', function() {
             const { body, status } = response;
             expect(status).toBe(400);
             expect(body).toHaveProperty('message', 'Wrong password');
+            done();
+        })
+    });
+});
+describe('NOT FOUND /login', function() {
+    it('responds with message in json', function(done) {
+      request(app)
+        .post('/login')
+        .send({username: 'notfound', password: '123'})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .then(response => {
+            const { body, status } = response;
+            expect(status).toBe(404);
+            expect(body).toHaveProperty('message', 'Username not found');
             done();
         })
     });
