@@ -9,5 +9,15 @@ class UserModel {
     static findOne(username) {
         return User.findOne({ "username": username });
     }
+    static findAll() {
+        return User.find().toArray();
+    }
+    static update(id, updatedUser) {
+        return User.findOneAndUpdate(
+          { _id: ObjectId(id) },
+          { $set: updatedUser },
+          { returnOriginal: false }
+        );
+      }
 }
 module.exports = UserModel;

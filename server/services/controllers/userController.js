@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Trip = require('../models/trip');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 class Controller {
@@ -37,6 +38,46 @@ class Controller {
             }
         })
         .catch(err => console.log(err));
+    }
+    static listAvailable(req, res, next) {
+        let users = [];
+        User.findAll()
+        .then(data => {
+            users = data;
+            let promises = [];
+            data.forEach(user => {
+                promises.push(Trip.findCurrent(String(user._id)))
+                console.log(user._id);
+            })
+            return Promise.all(promises);
+        })
+        .then(data => {
+            let availables = [];
+            data.forEach((el, idx) => {
+                if(!el) availables.push(users[idx]);
+            })
+            res.status(200).json(availables);
+        })
+        .catch(console.log);
+    }
+    static upLocation(req, res, next) {
+        const { id } = req.params;
+        const { lat, lng } = req.body;
+        User.update(id, { lat, lng })
+        .then(data => res.status(200).json(data.value))
+        .catch(console.log);
+    }
+    static listOne(req, res, next) {
+        const { username } = req.params;
+        User.findOne(username)
+        .then(data => {
+            if(data) {
+                res.status(200).json(data);
+            } else {
+                res.status(404).json({ message: 'User not found' });
+            }
+        })
+        .catch(console.log);
     }
 }
 module.exports = Controller;

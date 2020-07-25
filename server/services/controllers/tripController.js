@@ -33,7 +33,10 @@ class Controller {
         status: false
       })
     })
-    .then(data => res.status(201).json(data.ops[0]))
+    .then(data => {
+      Controller.pushNotification(userId); // belum diaplikasikan
+      res.status(201).json(data.ops[0])
+    })
     .catch(console.log);
   }
   static list(req, res, next) {
@@ -63,6 +66,10 @@ class Controller {
       res.status(200).json(data)
     })
     .catch(console.log);
+  }
+  static pushNotification(userId) {
+    // push notifikasi ke client mobile sesuai userId
+    console.log(`Notifikasi masuk hp user ${userId}`)
   }
 }
 module.exports = Controller;
