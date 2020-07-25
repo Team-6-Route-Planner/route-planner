@@ -61,7 +61,7 @@ export default function Home(){
 				  <option selected disabled>----------------------- Pilih kurir ------------------------</option>
 				  {
 				  	dataUser.map((elem, idx) =>(
-				  	  <option key={idx} value={elem}>{dataUser.username}</option>
+				  	  <option key={idx} dataUser={elem} value={elem._id}>{elem.username}</option>
 				  	))
 				  }
 				</Form.Control>
