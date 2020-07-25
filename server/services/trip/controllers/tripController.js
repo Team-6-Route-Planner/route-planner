@@ -1,21 +1,40 @@
 const Trip = require("../models/trip");
+const Route = require('../models/route');
 const shortestTrip = require("../helpers/shortestTrip");
 class Controller {
-  static async add(req, res, next) {
+  static add(req, res, next) {
     const { addresses, userId } = req.body;
-    let trip = await shortestTrip(addresses);
-    if(!Array.isArray(trip)){
-      res.status(400).json({ message: 'Wrong address'})
-      // console.log('Wrong Address');
-    } else {
-      Trip.create({
-        routes: trip,
-        userId: userId,
-        status: false,
+    shortestTrip(addresses)
+    .then(trip => {
+      if(!Array.isArray(trip)){
+        return res.status(400).json({ message: 'Wrong address'});
+      } else {
+        let promises = [];
+        trip.forEach(el => {
+          promises.push(Route.create({
+            lat: el.lat,
+            lng: el.lng,
+            address: el.address,
+            status: 'ongoing',
+            arrivedAt: null
+          }))
+        })
+        return Promise.all(promises)
+      }
+    })
+    .then(data => {
+      let routes = [];
+      data.forEach(el => {
+        routes.push(el.ops[0]);
       })
-        .then(async (data) => res.status(201).json(data.ops[0]))
-        .catch(console.log);
-    }
+      return Trip.create({
+        routes,
+        userId,
+        status: false
+      })
+    })
+    .then(data => res.status(201).json(data.ops[0]))
+    .catch(console.log);
   }
   static list(req, res, next) {
     Trip.findAll()
