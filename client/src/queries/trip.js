@@ -1,10 +1,11 @@
 import { gql } from '@apollo/client'
 
 export const ADD_TRIP = gql`
-	mutation AddTrip($trip: TripInput) {
-    addTrip(trip: $trip) {
+	mutation ($addresses: [String], $userId: String) {
+    addTrip(addresses: $addresses, userId: $userId) {
       _id
-      addresses
+      userId
+      status
     }
   }
 `

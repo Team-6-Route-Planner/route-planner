@@ -33,10 +33,11 @@ export default function Home(){
 		const submitAdd = (event) => {
 		  event.preventDefault();
 		  const dataSubmission = { ...form };
-		  console.log(dataSubmission);
+		  console.log(dataSubmission, '<<< datasub');
 		  actionSubmit({
 		    variables: {
-		      trip: dataSubmission,
+			  addresses: dataSubmission.addresses,
+			  userId: "5f1b1d644ebba5e6035711b6",
 		    },
 		  })
 		    .then((_) => {
