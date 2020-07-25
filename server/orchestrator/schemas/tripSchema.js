@@ -15,20 +15,36 @@ const typeDefs = gql`
         userId: String
     }
     extend type Query {
-        getCurrentTrip(id: ID): Trip
+        getCurrentTrip(userId: String): Trip
+        getHistory(userId: String): [Trip]
     }
     extend type Mutation {
         addTrip(addresses: [String], userId: String) : Trip
+        editTrip(_id: ID, status: Boolean): Trip
     }
 `;
 
 const resolvers = {
     Query: {
         getCurrentTrip: (_, args) => {
-            const { id } = args;
+            const { userId } = args;
             return axios({
                 method: 'get',
-                url: `${baseUrl}/`
+                url: `${baseUrl}/${userId}`
+            })
+            .then(({ data }) => {
+                return data;
+            })
+            .catch(console.log);
+        },
+        getHistory: (_, args) => {
+            const { userId } = args;
+            return axios({
+                method: 'get',
+                url: `${baseUrl}/${userId}/history`
+            })
+            .then(({ data }) => {
+                return data;
             })
         }
     },
@@ -42,6 +58,18 @@ const resolvers = {
             })
             .then(({ data }) => {
                 return data;
+            })
+            .catch(console.log);
+        },
+        editTrip: (_, args) => {
+            const { _id, status } = args;
+            return axios({
+                method: 'put',
+                url: `${baseUrl}/${_id}`,
+                data: { status }
+            })
+            .then(({ data }) => {
+                return data.value;
             })
             .catch(console.log);
         }

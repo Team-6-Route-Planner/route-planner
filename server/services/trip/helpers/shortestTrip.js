@@ -49,8 +49,8 @@ async function shortestTrip(listAddress) {
     .then((data) => {
       return data;
     })
-    .catch(console.error);
-  console.log(result);
+    .catch(err => err);
+  // console.log(result);
   return result;
 }
 

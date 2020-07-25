@@ -4,13 +4,18 @@ class Controller {
   static async add(req, res, next) {
     const { addresses, userId } = req.body;
     let trip = await shortestTrip(addresses);
-    Trip.create({
-      trip,
-      userId: Number(userId),
-      status: false,
-    })
-      .then(async (data) => res.status(200).json(data.ops[0]))
-      .catch(console.log);
+    if(!Array.isArray(trip)){
+      res.status(400).json({ message: 'Wrong address'})
+      // console.log('Wrong Address');
+    } else {
+      Trip.create({
+        routes: trip,
+        userId: userId,
+        status: false,
+      })
+        .then(async (data) => res.status(201).json(data.ops[0]))
+        .catch(console.log);
+    }
   }
   static list(req, res, next) {
     Trip.findAll()
@@ -19,27 +24,26 @@ class Controller {
   }
   static listOneCurrent(req, res, next) {
     const { userId } = req.params;
-    Trip.findCurrent(Number(userId))
-      .then((data) => res.status(200).json(data))
+    Trip.findCurrent(userId)
+      .then((data) => {
+        res.status(200).json(data)
+      })
       .catch(console.log);
   }
   static edit(req, res, next) {
     const { id } = req.params;
     const { status } = req.body;
     Trip.update(id, { status })
-      .then((data) => res.status(200).json(data))
+      .then((data) => res.status(200).json(data.value))
       .catch(console.log);
   }
-  static getShortestTrip(req, res, next) {
-    const { tripId } = req.params;
-    console.log(req.params.tripId);
-    Trip.findTrip(tripId)
-      .then(async (data) => {
-        let trip = await shortestTrip(data.addresses);
-        console.log(trip);
-        res.status(200).json(trip);
-      })
-      .catch(console.log);
+  static showHistory(req, res, next) {
+    const { userId } = req.params;
+    Trip.findDones(userId)
+    .then((data) => {
+      res.status(200).json(data)
+    })
+    .catch(console.log);
   }
 }
 module.exports = Controller;
