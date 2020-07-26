@@ -16,6 +16,7 @@ export const FETCH_POSITION = gql`
 			lat
 			lng
 			username
+			status
 		}
 	}
 `;
