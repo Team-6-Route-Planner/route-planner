@@ -11,7 +11,7 @@ const GET_TRIPS = gql`
 `
 
 export default ({navigation}) => {
-  const {loading, data, error} = useQuery(GET_TRIPS)
+  const {loading, data:allHistoryTrips, error} = useQuery(GET_TRIPS)
   useEffect(()=>{
     return ()=>{}
   },[])
@@ -46,10 +46,13 @@ export default ({navigation}) => {
         </Text>
       </View>
       <View style={{marginTop: 20}}>
-        <FlatList
-         data={trip}
-         keyExtractor = {(_, i) => i}
-         renderItem = {renderItem}/>
+        {allHistoryTrips.trips.map((trip, i)=>{
+          return (
+            <View style={styles.cardBox} key={i}>
+              <Text style={{color: '#3D73DD', fontSize: 20}}>{'oyee'}</Text>
+            </View>
+          )
+        })}
       </View>
     </View>
   )

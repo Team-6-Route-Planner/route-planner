@@ -28,6 +28,7 @@ const resolvers = {
             })
         },
         login: (_, args) => {
+            console.log('masukkkkk')
             const { username, password } = args;
             return axios({
                 method: 'post',
@@ -38,7 +39,6 @@ const resolvers = {
                 return data;
             })
         }
-
     }
 }
 module.exports = { typeDefs, resolvers }

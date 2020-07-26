@@ -38,6 +38,7 @@ const resolvers = {
             .catch(console.log);
         },
         getHistory: (_, args) => {
+            console.log('masuk getHistory')
             const { userId } = args;
             return axios({
                 method: 'get',

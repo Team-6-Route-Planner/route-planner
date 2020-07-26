@@ -3,11 +3,43 @@ import {Text, View, StyleSheet, Dimensions, TextInput} from 'react-native'
 import {Button} from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
+import {gql, useMutation} from '@apollo/client'
+import {myUser} from '../config'
+const LOGIN = gql`
+  mutation Login($username: String, $password: String){
+    login(username: $username, password: $password){
+      id:_id
+      name:username
+    }
+  }
+`
 
 
 export default ({navigation}) => {
-  const [name, setName] = useState(null);
-  const [password, setPassword] = useState(null)
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('')
+
+  const [loginCheck] = useMutation(LOGIN,{
+    onCompleted: (data)=>{
+      myUser(data.login)
+      navigation.navigate('Dashboard')
+    },
+    onError(err){
+      console.log(err)
+    }
+  })
+
+  const onPress = () =>{
+    loginCheck({
+      variables:{
+        username:name,
+        password
+      }
+    })
+    // .then(_=>{
+    //   navigation.navigate('Dashboard')
+    // })
+  }
 
   return (
     <View style ={styles.container}>
@@ -19,14 +51,14 @@ export default ({navigation}) => {
         <View style={{justifyItems:'flex-start', width: 200}}>
           <Text style={{color: '#3D73DD', fontSize:16, marginBottom: -10}}>username</Text>
         </View>
-        <TextInput maxLength={10} 
+        <TextInput 
         style={styles.inputText}
         onChangeText={text=> setName(text)} />
 
         <View style={{justifyItems:'flex-start', width: 200}}>
           <Text style={{color: '#3D73DD', fontSize:16, marginBottom: -10}}>password</Text>
         </View>
-        <TextInput maxLength={10}
+        <TextInput
         secureTextEntry
         // textContentType="password" 
         style={styles.inputText}
@@ -42,7 +74,7 @@ export default ({navigation}) => {
           />
         }
         title="   Login"
-        onPress={()=>navigation.navigate('Dashboard')}
+        onPress={()=>onPress()}
         />
       </View>
     </View>

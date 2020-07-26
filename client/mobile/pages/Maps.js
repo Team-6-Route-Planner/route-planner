@@ -8,30 +8,32 @@ import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
 const API_KEY = 'AIzaSyCyNsE0LjFJCgGeT4sJoQFsVZmrCXaw79o'
 
 
-export default ({coordinates}) => {
+export default ({route}) => {
+  const {currentTrip} = route.params
   const [myPosition, setMyPosition] = useState({
     latitude: null,
     longitude: null
   });
   
 
-  const position = [{
-    name: 'Hacktiv8',
-    address: 'Jl. Sultan Iskandar Muda No.7, Kby. Lama Sel., Kec. Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12240',
-    latitude: -6.2652709,
-    longitude: 106.7767303
-  },{
-    name: 'Hacktiv8',
-    address: 'Jl. Sultan Iskandar Muda No.7, Kby. Lama Sel., Kec. Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12240',
-    latitude: -6.2576627,
-    longitude: 106.7919658
-  }]
+  const waypoint = () => {
+    const waypoint = currentTrip.routes.slice(1,-1).map(coordinate=>{
+      return {
+        latitude: coordinate.lat,
+        longitude: coordinate.lng
+      }
+    })
 
-  const wayPoint = {
-    latitude: -6.2566627,
-    longitude: 106.7719658
+    // console.log(waypoint)
 
+    return waypoint
   }
+
+  // const wayPoint = {
+  //   latitude: -6.2566627,
+  //   longitude: 106.7719658
+
+  // }
 
   const getPosition = async () => {
     const { status } = await Permissions.getAsync(Permissions.LOCATION)
@@ -50,11 +52,11 @@ export default ({coordinates}) => {
 
   useEffect(()=>{
     getPosition()
-  },[getPosition])
 
-  useEffect(()=>{
-    return () => {};
-  })
+    const abortController = new AbortController()
+
+    return ()=> {abortController.abort()}
+  },[getPosition])
 
   return (
     <View style={styles.container}>
@@ -70,67 +72,61 @@ export default ({coordinates}) => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}>
-          {/* <Marker draggable
+          <Marker
             coordinate={{
-              latitude:coordinates[0].latitude,
-              longitude: coordinates[0].longitude
+              latitude:currentTrip.routes[0].lat,
+              longitude: currentTrip.routes[0].lng
             }}
-            title={"I'm here"}
+            title={"from here"}
           />
-          <Marker draggable
+          <Marker
             coordinate={{
-              latitude:coordinates[coordinates.length-1].latitude,
-              longitude: coordinates[coordinates.length-1].longitude
+              latitude:currentTrip.routes[currentTrip.routes.length-1].lat,
+              longitude: currentTrip.routes[currentTrip.routes.length-1].lng
             }}
-            title={"Go here"}
-          /> */}
-          {/* {coordinates.length > 2 && (
+            title={"to here"}
+          />
+          {currentTrip.routes.length > 2 && (
             <View>
-              {coordinates.slice(1,-1).map(coordinate=>{
-                <Marker draggable
-                coordinate={{
-                  latitude:coordinate.latitude,
-                  longitude: coordinate.longitude
-                }}
-                title={"waypoints"}/>
+              {currentTrip.routes.slice(1,-1).map((coordinate, i)=>{
+                return (
+                  <Marker key={i}
+                  coordinate={{
+                    latitude:coordinate.lat,
+                    longitude: coordinate.lng
+                  }}
+                  title={`waypoints ${i+1}`}/>
+                )
               })}
             </View>
-          )} */}
-          <Marker
-            title={position[0].name}
-            // description= {position[0].address}
-            coordinate={{
-              latitude:position[0].latitude,
-              longitude: position[0].longitude
+          )}
+          <MapViewDirections 
+            origin={{
+              latitude: currentTrip.routes[0].lat,
+              longitude: currentTrip.routes[0].lng
             }}
-            calloutOffset={{x: 0, y: 0}}
-          />
-          <Marker
-            title={position[position.length-1].name}
-            // description= {position[position.length-1].address}
-            coordinate={{
-              latitude:position[position.length-1].latitude,
-              longitude: position[position.length-1].longitude
+            destination={{
+              latitude: currentTrip.routes[currentTrip.routes.length-1].lat,
+              longitude: currentTrip.routes[currentTrip.routes.length-1].lng
+            }}
+            waypoints = {waypoint()}
+            apikey={API_KEY}
+            strokeWidth={3}
+            strokeColor="blue"
+            // optimizeWaypoints={true}
+            onStart={(params) => {
+              console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
+            }}
+            onReady={(result)=>{
+              console.log(`Distance: ${result.distance} km`)
+              console.log(`Duration: ${result.duration} min.`)
+            }}
+            onError={(errorMessage) => {
+              console.log('GOT AN ERROR');
             }}
           />
-          {/* <MapViewDirections 
-          origin={myPosition}
-          destination={destPosition}
-          waypoints = {[wayPoint]}
-          apikey={API_KEY}
-          strokeWidth={3}
-          strokeColor="blue"
-          optimizeWaypoints={true}
-          onStart={(params) => {
-            console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
-          }}
-          onReady={(result)=>console.log(result)}
-          onError={(errorMessage) => {
-            console.log('GOT AN ERROR');
-          }}
-          /> */}
         </MapView>
-      )}
+        )}
       <Text>Oyee</Text>
     </View>
   );

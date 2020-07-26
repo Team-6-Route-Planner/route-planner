@@ -5,7 +5,7 @@ import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
 import {Button} from 'react-native-elements'
 import {gql, useQuery} from '@apollo/client'
 import trip from '../fakeData'
-import {myTrips} from '../config'
+import {myTrips, myUser, myOngoingTrip} from '../config'
 
 const GET_USER = gql`
   query{
@@ -13,28 +13,73 @@ const GET_USER = gql`
   }
 `
 
+const GET_HISTORY_TRIPS = gql`
+  query GetHistoryTripsById($UserId: String){
+    getHistory(userId: $UserId){
+      _id
+      routes {lat lng address}
+      status
+    }
+  }
+`
+
+const GET_CURRENT_TRIPS = gql`
+  query GetCurrentTripsById($UserId: String){
+    getCurrentTrip(userId: $UserId){
+      _id
+      routes {lat lng address}
+      status
+    }
+  }
+`
+
+const GET_TRIPS = gql`
+  query{
+    trips @client
+  }
+`
+
 export default ({navigation}) => {
-  const {loading, data, error} = useQuery(GET_USER)
-  myTrips([...trip])
+  const user = myUser();
+  const {loading, data, error} = useQuery(GET_USER, {
+    onError: (err) => {
+      console.log(err)
+    }
+  })
+  
+  const {data:historyTrips, error:errorTrips} = useQuery(GET_HISTORY_TRIPS,{
+    variables: {
+      UserId: user.id
+    },
+    onCompleted: (data) =>{
+      myTrips([...data.getHistory])
+    }
+  })
+
+  const {data:currentTrip, loading:loadingCurrentTrip} = useQuery(GET_CURRENT_TRIPS,{
+    variables: {
+      UserId: user.id
+    },
+    onCompleted: (data) =>{
+      myOngoingTrip(data.getHistory)
+    }
+  })
+
+  
+  
+  const {loading:loadingTrips, data:allHistoryTrips} = useQuery(GET_TRIPS)
+
+  // myTrips([...trip])
   useEffect(()=>{
     return ()=>{}
   },[])
 
-  if(loading){
+  if(loading && loadingCurrentTrip && loadingTrips){
     return <Text>Loading...</Text>
   }
 
-  if(error){
+  if(error && errorTrips){
     return <Text>Error...</Text>
-  }
-
-  const renderItem = (data, index) => {
-    // console.log(trip)
-    return (
-      <View style={styles.cardBox}>
-        <Text style={{color: '#3D73DD', fontSize: 20}}>{data.item.name}</Text>
-      </View>
-    )
   }
 
   return (
@@ -109,7 +154,10 @@ export default ({navigation}) => {
           />
         }
         title="   To Maps"
-        onPress={() => navigation.navigate('Maps')}
+        onPress={() => {
+          // console.log(currentTrip)
+          navigation.navigate('Maps', {currentTrip: currentTrip.getCurrentTrip})
+        }}
         />
 
       <View>
@@ -128,10 +176,14 @@ export default ({navigation}) => {
         onPress={()=> navigation.navigate('All Trips')}>
           {'lihat semua >'}
         </Text>
-        <FlatList
-         data={trip}
-         keyExtractor = {(_, i) => i}
-         renderItem = {renderItem}/>
+        {/* <Text>{JSON.stringify(allHistoryTrips.trips)}</Text> */}
+        {allHistoryTrips.trips.map((trip, i)=>{
+          return (
+            <View style={styles.cardBox} key={i}>
+              <Text style={{color: '#3D73DD', fontSize: 20}}>{'oyee'}</Text>
+            </View>
+          )
+        })}
       </View>
     </View>
   )
