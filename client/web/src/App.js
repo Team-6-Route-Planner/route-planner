@@ -1,16 +1,15 @@
 import React from "react";
-import { ApolloProvider } from '@apollo/client'
-import {
-  BrowserRouter as Router, Switch, Route
-} from "react-router-dom"
+import { ApolloProvider } from "@apollo/client";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // import Apollo Client
-import client from './config/graphql';
-import {Container} from 'react-bootstrap'
+import client from "./config/graphql";
+import { Container } from "react-bootstrap";
 // import bootstrap css
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from './components/Navbar';
-import Home from './pages/Home.js'
-import Track from './pages/Track.js'
+import "bootstrap/dist/css/bootstrap.min.css";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home.js";
+import Track from "./pages/Track.js";
+import History from "./pages/History";
 
 export default function App() {
   return (
@@ -24,6 +23,9 @@ export default function App() {
             </Route>
             <Route exact path="/track">
               <Track />
+            </Route>
+            <Route exact path="/history">
+              <History />
             </Route>
           </Switch>
         </Container>

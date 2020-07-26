@@ -2,11 +2,11 @@ const Trip = require("../models/trip");
 const shortestTrip = require("../helpers/shortestTrip");
 class Controller {
   static async add(req, res, next) {
+    console.log("masuk");
     const { addresses, userId } = req.body;
     let trip = await shortestTrip(addresses);
-    if(!Array.isArray(trip)){
-      res.status(400).json({ message: 'Wrong address'})
-      // console.log('Wrong Address');
+    if (!Array.isArray(trip)) {
+      res.status(400).json({ message: "Wrong address" });
     } else {
       Trip.create({
         routes: trip,
@@ -26,7 +26,7 @@ class Controller {
     const { userId } = req.params;
     Trip.findCurrent(userId)
       .then((data) => {
-        res.status(200).json(data)
+        res.status(200).json(data);
       })
       .catch(console.log);
   }
@@ -40,10 +40,10 @@ class Controller {
   static showHistory(req, res, next) {
     const { userId } = req.params;
     Trip.findDones(userId)
-    .then((data) => {
-      res.status(200).json(data)
-    })
-    .catch(console.log);
+      .then((data) => {
+        res.status(200).json(data);
+      })
+      .catch(console.log);
   }
 }
 module.exports = Controller;
