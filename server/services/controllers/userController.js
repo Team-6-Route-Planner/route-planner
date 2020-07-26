@@ -15,18 +15,16 @@ class Controller {
             }
         })
         .then(data => {
-            if(data) {
-                res.status(201).json(data.ops[0]);
-            }
+            res.status(201).json(data.ops[0]);
         })
-        .catch(err => console.log(err));
+        .catch(console.log);
     }
     static login(req, res, next) {
         const { username, password } = req.body
         User.findOne(username)
         .then(data => {
             if(!data) {
-                res.status(404).json({ message: "Username not found" });
+                res.status(404).json({ message: "User not found" });
             } else if(!bcrypt.compareSync(password, data.password)){
                 res.status(400).json({ message: "Wrong password" });
             } else {
@@ -37,7 +35,7 @@ class Controller {
                 res.status(200).json({ message: "Login success", _id: data._id, username: data.username, token })
             }
         })
-        .catch(err => console.log(err));
+        .catch(console.log);
     }
     static listAvailable(req, res, next) {
         let users = [];
