@@ -12,6 +12,7 @@ const typeDefs = gql`
     }
     extend type Query {
         getAvailables : [User]
+        getUser(id: ID): User
     }
     extend type Mutation {
         register(username: String, password: String): User
@@ -26,6 +27,16 @@ const resolvers = {
             return axios({
                 method: 'get',
                 url: `${baseUrl}/availables`
+            })
+            .then(({ data }) => {
+                return data;
+            })
+        },
+        getUser: (_, args) => {
+            const { id } = args;
+            return axios({
+                method: 'get',
+                url: `${baseUrl}/${id}`
             })
             .then(({ data }) => {
                 return data;

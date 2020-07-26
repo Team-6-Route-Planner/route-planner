@@ -55,7 +55,7 @@ class Controller {
   static edit(req, res, next) {
     const { id } = req.params;
     const { status } = req.body;
-    Trip.update(id, { status: status === 'true' })
+    Trip.update(id, { status })
       .then((data) => res.status(200).json(data.value))
       .catch(console.log);
   }
@@ -67,6 +67,7 @@ class Controller {
     })
     .catch(console.log);
   }
+  
   static pushNotification(userId) {
     // push notifikasi ke client mobile sesuai userId
     console.log(`Notifikasi masuk hp user ${userId}`)

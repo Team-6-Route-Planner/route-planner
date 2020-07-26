@@ -39,7 +39,7 @@ const resolvers = {
             const { userId } = args;
             return axios({
                 method: 'get',
-                url: `${baseUrl}/${userId}`
+                url: `${baseUrl}/${userId}/current`
             })
             .then(({ data }) => {
                 return data;

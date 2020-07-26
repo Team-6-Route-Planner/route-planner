@@ -12,8 +12,6 @@ class Controller {
         })
         .then(data => {
             let foundIndex = data.routes.findIndex(el => {
-                console.log(el._id, '<< el.id')
-                console.log(routeId, '<<< routeId')
                 return String(el._id) === String(routeId)
             })
             let newRoutes = [...data.routes];

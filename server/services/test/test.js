@@ -1,2 +1,3 @@
 require('./user');
-// require('./trip');
+require('./trip');
+require('./route');

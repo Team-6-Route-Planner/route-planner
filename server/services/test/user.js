@@ -10,6 +10,8 @@ describe('SUCCESS /register', function() {
         .expect('Content-Type', /json/)
         .then(response => {
             const { body, status } = response;
+            global.userId = body._id;
+            global.username = body.username
             expect(status).toBe(201);
             expect(body).toHaveProperty('_id', expect.any(String));
             expect(body).toHaveProperty('username', 'test');
