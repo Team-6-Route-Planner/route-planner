@@ -4,6 +4,9 @@ const baseUrl = process.env.TRIP_PATH;
 
 const typeDefs = gql`
     type Route {
+        _id: ID
+        status: String
+        arrivedAt: String
         lat: Float
         lng: Float
         address: String	
