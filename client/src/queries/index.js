@@ -1,9 +1,9 @@
-import {ADD_TRIP} from './query.js'
-import {FETCH_USERS} from './query.js'
+import {ADD_TRIP, FETCH_USERS, FETCH_POSITION} from './query.js'
 
 const queryType = {
 	addTrip: ADD_TRIP,
-	fetchUsers: FETCH_USERS,
+	getAvailable: FETCH_USERS,
+	getUser: FETCH_POSITION,
 }
 
 export default queryType
