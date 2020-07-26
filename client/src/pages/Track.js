@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from "react"
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { useQuery } from '@apollo/client'
-import {FETCH_POSITION} from '../queries/trip.js'
+/*import { useQuery } from '@apollo/client'
+import {FETCH_POSITION} from '../queries/trip.js'*/
+import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
+import 'react-vertical-timeline-component/style.min.css';
 export default function Track(){
   const [ currentPosition, setCurrentPosition ] = useState({});
-  
-  const dataPosition = useQuery(FETCH_POSITION,{
+
+ /* const dataPosition = useQuery(FETCH_POSITION,{
     variables: {
       _id,
       lat,
@@ -13,7 +15,7 @@ export default function Track(){
       username,
     },
     pollInterval: 3000,
-  })
+  }) */
 
   const success = position => {
     const currentPosition = {
@@ -38,30 +40,7 @@ export default function Track(){
     navigator.geolocation.getCurrentPosition(success);
   })
 
-  /*const locations = [
-    {
-      courier_name: "Bapak Ujang",
-      location: { 
-        lat: 41.3954,
-        lng: 2.162 
-      },
-    },
-    {
-      courier_name: "Mas Abdul",
-      location: { 
-        lat: 41.3917,
-        lng: 2.1649
-      },
-    },
-    {
-      courier_name: "Bang Anwar",
-      location: { 
-        lat: 41.3773,
-        lng: 2.1585
-      },
-    }
-  ];*/
-  
+
   return (
     <>
     
@@ -82,6 +61,33 @@ export default function Track(){
         </GoogleMap>
 
      </LoadScript>
+
+     <VerticalTimeline>
+      <VerticalTimelineElement
+        className="vertical-timeline-element--work"
+        contentStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
+        contentArrowStyle={{ borderRight: '7px solid  rgb(33, 150, 243)' }}
+        date="2011 - present"
+        iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
+      >
+        <h3 className="vertical-timeline-element-title">Creative Director</h3>
+        <h4 className="vertical-timeline-element-subtitle">Miami, FL</h4>
+        <p>
+          Creative Direction, User Experience, Visual Design, Project Management, Team Leading
+        </p>
+      </VerticalTimelineElement>
+      <VerticalTimelineElement
+        className="vertical-timeline-element--work"
+        date="2010 - 2011"
+        iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
+      >
+        <h3 className="vertical-timeline-element-title">Art Director</h3>
+        <h4 className="vertical-timeline-element-subtitle">San Francisco, CA</h4>
+        <p>
+          Creative Direction, User Experience, Visual Design, SEO, Online Marketing
+        </p>
+      </VerticalTimelineElement>
+     </VerticalTimeline>
      </>
   )
 }
