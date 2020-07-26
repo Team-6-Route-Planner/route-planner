@@ -9,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home.js";
 import Track from "./pages/Track.js";
-import Listtrip from "./pages/ListTrip";
+import Details from "./pages/DetailsTrip";
 
 export default function App() {
   return (
@@ -24,8 +24,8 @@ export default function App() {
             <Route exact path="/track">
               <Track />
             </Route>
-            <Route exact path="/listtrip">
-              <Listtrip />
+            <Route exact path="/detailstrip/:userId">
+              <Details />
             </Route>
           </Switch>
         </Container>
