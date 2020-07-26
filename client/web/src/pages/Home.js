@@ -64,7 +64,7 @@ export default function Home(){
 	          <Col sm="5">
 	           <Form.Control as="select" className="users">
 	            {
-	              data.users.map(user => (
+	              data.getAvailables.map(user => (
 	                <option key={user._id} value={user._id}>{user.username}</option>
 	              ))
 	            }
