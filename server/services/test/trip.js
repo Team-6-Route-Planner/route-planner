@@ -90,14 +90,14 @@ describe('SUCCESS PUT', function() {
     it('responds with data in json', function(done) {
       request(app)
         .put(`/trips/${global.tripId}`)
-        .send({ status: true })
+        .send({ status: false })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .then(response => {
             const { body, status } = response;
             expect(status).toBe(200);
             expect(body).toHaveProperty('_id', expect.any(String));
-            expect(body.status).toBeTruthy();
+            expect(body.status).toBeFalsy();
             expect(body.userId).toMatch(global.userId);
             expect(body).toHaveProperty('routes', expect.any(Array));
             done();
