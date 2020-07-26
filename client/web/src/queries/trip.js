@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client'
 
+
 export const FETCH_USERS = gql`
   query {
     getAvailables {
@@ -20,6 +21,7 @@ export const FETCH_POSITION = gql`
 		}
 	}
 `;
+
 
 export const ADD_TRIP = gql`
 	mutation ($addresses: [String], $userId: String) {

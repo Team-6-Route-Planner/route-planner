@@ -16,8 +16,7 @@ export default () => {
           </Nav.Link>
           <Nav.Link as={Link} to="/listcourier">
             Daftar Kurir
-          </Nav.Link>
-        </Nav>
+          </Nav>
       </Navbar.Collapse>
     </Navbar>
   );
