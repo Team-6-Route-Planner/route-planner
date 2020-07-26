@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('./app');
+const app = require('../app');
 
 const userId = '5f1b1d644ebba5e6035711b6';
 let tripId;
