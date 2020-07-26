@@ -1,8 +1,25 @@
 import React, {useState, useEffect} from "react"
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
+/*import { useQuery } from '@apollo/client'
+import {FETCH_POSITION} from '../queries/trip.js'*/
 export default function Track(){
   const [ currentPosition, setCurrentPosition ] = useState({});
+
+ /* const dataPosition = useQuery(FETCH_POSITION,{
+    variables: {
+      _id,
+      lat,
+      lng,
+      username,
+    },
+    pollInterval: 3000,
+  }) */
+
+
+export default function Track(){
+  const [ currentPosition, setCurrentPosition ] = useState({});
+
   const success = position => {
     const currentPosition = {
       lat: position.coords.latitude,
@@ -26,6 +43,9 @@ export default function Track(){
     navigator.geolocation.getCurrentPosition(success);
   })
 
+
+  return (
+    <>
   /*const locations = [
     {
       courier_name: "Bapak Ujang",
@@ -51,6 +71,7 @@ export default function Track(){
   ];*/
   
   return (
+
      <LoadScript
        googleMapsApiKey='AIzaSyCyNsE0LjFJCgGeT4sJoQFsVZmrCXaw79o'>
         <GoogleMap
@@ -68,5 +89,11 @@ export default function Track(){
         </GoogleMap>
 
      </LoadScript>
+
+
+     
+     </>
+
+
   )
 }

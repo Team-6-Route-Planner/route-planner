@@ -14,10 +14,9 @@ export default () => {
           <Nav.Link as={Link} to="/">
             Home
           </Nav.Link>
-          <Nav.Link as={Link} to="/track">
-            Track Courier
-          </Nav.Link>
-        </Nav>
+          <Nav.Link as={Link} to="/listcourier">
+            Daftar Kurir
+          </Nav>
       </Navbar.Collapse>
     </Navbar>
   );
