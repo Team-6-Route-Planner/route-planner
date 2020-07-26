@@ -10,6 +10,9 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home.js";
 import Track from "./pages/Track.js";
 import Details from "./pages/DetailsTrip";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+import ListCourier from "./pages/ListCourier.js";
 
 export default function App() {
   return (
@@ -21,8 +24,8 @@ export default function App() {
             <Route exact path="/">
               <Home />
             </Route>
-            <Route exact path="/track">
-              <Track />
+            <Route exact path="/listcourier">
+              <ListCourier />
             </Route>
             <Route exact path="/detailstrip/:userId">
               <Details />

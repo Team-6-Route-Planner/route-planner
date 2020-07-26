@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { ADD_TRIP } from "../queries/trip.js";
-
+import { FETCH_USERS } from "../queries/trip.js";
 export default function Home() {
   const history = useHistory();
+
+  const { loading, error, data } = useQuery(FETCH_USERS);
+
   const [actionSubmit] = useMutation(ADD_TRIP);
 
   const [form, setForm] = useState({
@@ -32,7 +35,7 @@ export default function Home() {
 
   const submitAdd = (event) => {
     event.preventDefault();
-    const dataSubmission = { ...form };
+    let dataSubmission = { ...form };
     console.log(dataSubmission, "<<< datasub");
     actionSubmit({
       variables: {
@@ -45,7 +48,8 @@ export default function Home() {
       })
       .catch((err) => console.log(err));
   };
-
+  if (loading) return <p>Loading... </p>;
+  if (error) return <p>Error... ${error.message} </p>;
   return (
     <>
       <center>
@@ -54,7 +58,22 @@ export default function Home() {
       <Form className="mt-5" onSubmit={submitAdd}>
         <Form.Group as={Row}>
           <Form.Label column sm="3">
-            Addresses
+            Petugas Kurir
+          </Form.Label>
+          <Col sm="5">
+            <Form.Control as="select" className="users">
+              {data.getAvailables.map((user) => (
+                <option key={user._id} value={user._id}>
+                  {user.username}
+                </option>
+              ))}
+            </Form.Control>
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row}>
+          <Form.Label column sm="3">
+            Alamat Paket
           </Form.Label>
           <Col sm="5">
             <Form.Control
@@ -66,7 +85,7 @@ export default function Home() {
           </Col>
           <Col sm="4">
             <Button onClick={addAddress} variant="outline-info">
-              Add Address
+              Tambah Alamat
             </Button>
           </Col>
         </Form.Group>
