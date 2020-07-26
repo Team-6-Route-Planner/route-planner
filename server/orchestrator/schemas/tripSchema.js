@@ -1,5 +1,5 @@
-const { gql } = require('apollo-server');
-const axios = require('axios');
+const { gql } = require("apollo-server");
+const axios = require("axios");
 const baseUrl = process.env.TRIP_PATH;
 const routeUrl = process.env.ROUTE_PATH;
 
