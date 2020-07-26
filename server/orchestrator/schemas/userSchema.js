@@ -8,6 +8,9 @@ const typeDefs = gql`
         username: String
         token: String
     }
+    extend type Query {
+        getAvailables : [User]
+    }
     extend type Mutation {
         register(username: String, password: String): User
         login(username: String, password: String): User
@@ -15,6 +18,17 @@ const typeDefs = gql`
 `;
 
 const resolvers = {
+    Query: {
+        getAvailables: () => {
+            return axios({
+                method: 'get',
+                url: `${baseUrl}/availables`
+            })
+            .then(({ data }) => {
+                return data;
+            })
+        }
+    },
     Mutation: {
         register: (_, args) => {
             const { username, password } = args;
