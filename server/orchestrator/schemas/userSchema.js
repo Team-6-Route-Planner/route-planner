@@ -7,6 +7,8 @@ const typeDefs = gql`
         _id: ID
         username: String
         token: String
+        lat: Float
+        lng: Float
     }
     extend type Query {
         getAvailables : [User]
@@ -14,6 +16,7 @@ const typeDefs = gql`
     extend type Mutation {
         register(username: String, password: String): User
         login(username: String, password: String): User
+        updateLocation(userId: String, lat: Float, lng: Float): User 
     }
 `;
 
@@ -47,6 +50,17 @@ const resolvers = {
                 method: 'post',
                 url: `${baseUrl}/login`,
                 data: { username, password }
+            })
+            .then(({ data }) => {
+                return data;
+            })
+        },
+        updateLocation: (_, args) => {
+            const { userId, lat, lng } = args;
+            return axios({
+                method: 'put',
+                url: `${baseUrl}/${userId}`,
+                data: { lat, lng }
             })
             .then(({ data }) => {
                 return data;
