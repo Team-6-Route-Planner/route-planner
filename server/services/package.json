@@ -4,11 +4,13 @@
   "description": "",
   "main": "test.js",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "es6-promise": "^4.2.8",
     "express": "^4.17.1",
     "jest": "^26.1.0",
+    "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.9",
     "request": "^2.88.2"
   },
