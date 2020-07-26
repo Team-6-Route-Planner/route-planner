@@ -1,17 +1,17 @@
-import React, {useState, useEffect} from "react"
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import React, { useState, useEffect } from "react";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
-export default function Track(){
-  const [ currentPosition, setCurrentPosition ] = useState({});
-  const success = position => {
+export default function Track() {
+  const [currentPosition, setCurrentPosition] = useState({});
+  const success = (position) => {
     const currentPosition = {
       lat: position.coords.latitude,
-      lng: position.coords.longitude
-    }
+      lng: position.coords.longitude,
+    };
     setCurrentPosition(currentPosition);
   };
 
-  const mapStyles = {        
+  const mapStyles = {
     height: "50vh",
     width: "50%",
     marginTop: "30px",
@@ -19,12 +19,12 @@ export default function Track(){
   const onMarkerDragEnd = (e) => {
     const lat = e.latLng.lat();
     const lng = e.latLng.lng();
-    setCurrentPosition({ lat, lng})
+    setCurrentPosition({ lat, lng });
   };
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(success);
-  })
+  });
 
   /*const locations = [
     {
@@ -49,24 +49,22 @@ export default function Track(){
       },
     }
   ];*/
-  
+
   return (
-     <LoadScript
-       googleMapsApiKey='AIzaSyCyNsE0LjFJCgGeT4sJoQFsVZmrCXaw79o'>
-        <GoogleMap
-          mapContainerStyle={mapStyles}
-          zoom={13}
-          center={currentPosition}>
-          {
-            currentPosition.lat ? 
-            <Marker
+    <LoadScript googleMapsApiKey="AIzaSyCyNsE0LjFJCgGeT4sJoQFsVZmrCXaw79o">
+      <GoogleMap
+        mapContainerStyle={mapStyles}
+        zoom={13}
+        center={currentPosition}
+      >
+        {currentPosition.lat ? (
+          <Marker
             position={currentPosition}
             onDragEnd={(e) => onMarkerDragEnd(e)}
-            draggable={true} /> :
-            null
-          }
-        </GoogleMap>
-
-     </LoadScript>
-  )
+            draggable={true}
+          />
+        ) : null}
+      </GoogleMap>
+    </LoadScript>
+  );
 }

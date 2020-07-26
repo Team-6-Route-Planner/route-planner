@@ -17,8 +17,8 @@ export default () => {
           <Nav.Link as={Link} to="/track">
             Track Courier
           </Nav.Link>
-          <Nav.Link as={Link} to="/history">
-            History Courier
+          <Nav.Link as={Link} to="/listtrip">
+            List Trip
           </Nav.Link>
         </Nav>
       </Navbar.Collapse>
