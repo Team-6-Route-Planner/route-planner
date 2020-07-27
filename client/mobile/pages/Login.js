@@ -47,17 +47,15 @@ export default ({navigation}) => {
       barStyle="light-content"/>
       <Text style={{fontWeight:'bold', fontSize:40, color: 'white', marginBottom: 40}}>Routemaster</Text>
       <View style = {styles.box}>
-        <Text style={{fontWeight:'bold',textAlign:'center', color: '#3D73DD', fontSize:20, marginBottom: 20}}>LOGIN</Text>
-        <View style={{justifyItems:'flex-start', width: 200}}>
-          <Text style={{color: '#3D73DD', fontSize:16, marginBottom: -10}}>username</Text>
-        </View>
+        {/* <Text style={{fontWeight:'bold',textAlign:'center', color: '#3D73DD', fontSize:20, marginBottom: 20}}>LOGIN</Text> */}
+        
+          <Text style={{color: '#3D73DD', fontSize:18, fontWeight: 'bold', marginBottom: -5}}>username</Text>
+        
         <TextInput 
         style={styles.inputText}
         onChangeText={text=> setName(text)} />
-
-        <View style={{justifyItems:'flex-start', width: 200}}>
-          <Text style={{color: '#3D73DD', fontSize:16, marginBottom: -10}}>password</Text>
-        </View>
+        <Text style={{color: '#3D73DD', fontSize:18, fontWeight: 'bold', marginBottom: -5}}>password</Text>
+        
         <TextInput
         secureTextEntry
         // textContentType="password" 
@@ -65,15 +63,16 @@ export default ({navigation}) => {
         onChangeText={text=> setPassword(text)} />
 
         <Button
-        buttonStyle={{backgroundColor: '#3D73DD', paddingHorizontal: 20, borderRadius: 20, marginVertical: 15}}
+        buttonStyle={{backgroundColor: '#3D73DD', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 20, marginVertical: 15}}
         icon = {
           <Icon
-          name="gamepad"
+          name="map-marker"
           size={20}
           color="white"
           />
         }
-        title="   Login"
+        iconRight
+        title="Login   "
         onPress={()=>onPress()}
         />
       </View>

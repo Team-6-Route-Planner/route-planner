@@ -1,10 +1,8 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, Text, Image, FlatList} from 'react-native'
+import {View, StyleSheet, Text, Image, TouchableNativeFeedback} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
-import {Button} from 'react-native-elements'
 import {gql, useQuery} from '@apollo/client'
-import trip from '../fakeData'
 import {myTrips, myUser, myOngoingTrip} from '../config'
 
 const GET_USER = gql`
@@ -61,7 +59,7 @@ export default ({navigation}) => {
       UserId: user.id
     },
     onCompleted: (data) =>{
-      myOngoingTrip(data.getHistory)
+      myOngoingTrip(data.getCurrentTrip)
     }
   })
 
@@ -74,13 +72,15 @@ export default ({navigation}) => {
     return ()=>{}
   },[])
 
-  if(loading && loadingCurrentTrip && loadingTrips){
+  if(loading || loadingCurrentTrip || loadingTrips){
     return <Text>Loading...</Text>
   }
 
-  if(error && errorTrips){
+  if(error || errorTrips){
     return <Text>Error...</Text>
   }
+
+  const totalTrips = currentTrip.getCurrentTrip ? allHistoryTrips.trips.length + 1 : allHistoryTrips.trips.length;
 
   return (
     <View style={styles.container}>
@@ -126,7 +126,7 @@ export default ({navigation}) => {
               fontWeight: 'bold',
               fontSize: 55
             }}>
-              {trip.length + ' '}
+              {(totalTrips) + ' '}
             </Text>
             <Text style={{
               textAlign: 'center',
@@ -144,23 +144,7 @@ export default ({navigation}) => {
       <View style={{
         height: (styles.statusBox.marginBottom/2)*(-1)+40
       }} />
-      <Button
-        buttonStyle={{backgroundColor: '#3D73DD', paddingHorizontal: 20, borderRadius: 20, marginVertical: 15}}
-        icon = {
-          <Icon
-          name="gamepad"
-          size={20}
-          color="white"
-          />
-        }
-        title="   To Maps"
-        onPress={() => {
-          // console.log(currentTrip)
-          navigation.navigate('Maps', {currentTrip: currentTrip.getCurrentTrip})
-        }}
-        />
-
-      <View>
+      <View style={{marginTop: 20}}>
         <Text style={{
           color: '#3D73DD',
           fontSize: 28,
@@ -177,11 +161,39 @@ export default ({navigation}) => {
           {'lihat semua >'}
         </Text>
         {/* <Text>{JSON.stringify(allHistoryTrips.trips)}</Text> */}
+        {currentTrip.getCurrentTrip && (
+          <TouchableNativeFeedback
+          onPress={()=>navigation.navigate('Maps', {currentTrip: currentTrip.getCurrentTrip})}>
+            <View style={styles.cardBox}>
+                <Icon
+              name="exclamation-circle"
+              size={40}
+              color="#EE1234"
+              />
+              <View style={{flexDirection:'column', alignItems: 'flex-end'}}>
+                <Text style={{color: '#3D73DD', fontSize: 20}}>22 Juli 2020</Text>
+                <Text style={{color: '#EE1234', fontSize: 15}}>Tekan untuk menuju peta!</Text>
+              </View>
+            </View>
+          </TouchableNativeFeedback>
+        ) }
         {allHistoryTrips.trips.map((trip, i)=>{
           return (
-            <View style={styles.cardBox} key={i}>
-              <Text style={{color: '#3D73DD', fontSize: 20}}>{'oyee'}</Text>
-            </View>
+            <TouchableNativeFeedback
+            key={i}
+            onPress={()=>navigation.navigate('Detail Trip', {trip})}>
+                <View style={styles.cardBox}>
+                <Icon
+                name="check-circle"
+                size={40}
+                color="#30CB00"
+                />
+                <View style={{flexDirection:'column', alignItems: 'flex-end'}}>
+                  <Text style={{color: '#3D73DD', fontSize: 20}}>22 Juli 2020</Text>
+                  <Text style={{color: 'grey', fontSize: 15}}>Waktu Sampai: 10:20</Text>
+                </View>
+              </View>
+            </TouchableNativeFeedback>
           )
         })}
       </View>
@@ -220,6 +232,9 @@ const styles = StyleSheet.create({
     height: 150
   },
   cardBox:{
+    alignItems: 'center',
+    flexDirection:'row',
+    justifyContent: 'space-between',
     backgroundColor: '#ffffff',
     padding: 20,
     marginBottom: 10,

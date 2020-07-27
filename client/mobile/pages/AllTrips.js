@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, Text, FlatList} from 'react-native'
+import {ScrollView, View, StyleSheet, Text, TouchableNativeFeedback} from 'react-native'
 import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
 import {gql, useQuery} from '@apollo/client'
-import trip from '../fakeData'
+import {myOngoingTrip} from '../config'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const GET_TRIPS = gql`
   query{
@@ -12,6 +13,7 @@ const GET_TRIPS = gql`
 
 export default ({navigation}) => {
   const {loading, data:allHistoryTrips, error} = useQuery(GET_TRIPS)
+  const ongoingTrip = myOngoingTrip()
   useEffect(()=>{
     return ()=>{}
   },[])
@@ -33,7 +35,7 @@ export default ({navigation}) => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <GeneralStatusBarColor backgroundColor="#3D73DD"
       barStyle="light-content"/>
       <View style = {styles.greetingsBox}>
@@ -46,15 +48,42 @@ export default ({navigation}) => {
         </Text>
       </View>
       <View style={{marginTop: 20}}>
+        {ongoingTrip && (
+          <TouchableNativeFeedback
+          onPress={()=>navigation.navigate('Maps', {currentTrip: ongoingTrip})}>
+            <View style={styles.cardBox}>
+                <Icon
+              name="exclamation-circle"
+              size={40}
+              color="#EE1234"
+              />
+              <View style={{flexDirection:'column', alignItems: 'flex-end'}}>
+                <Text style={{color: '#3D73DD', fontSize: 20}}>22 Juli 2020</Text>
+                <Text style={{color: '#EE1234', fontSize: 15}}>Tekan untuk menuju peta!</Text>
+              </View>
+            </View>
+          </TouchableNativeFeedback>
+        )}
         {allHistoryTrips.trips.map((trip, i)=>{
           return (
-            <View style={styles.cardBox} key={i}>
-              <Text style={{color: '#3D73DD', fontSize: 20}}>{'oyee'}</Text>
-            </View>
+            <TouchableNativeFeedback key={i}
+            onPress={()=>navigation.navigate('Detail Trip', {trip})}>
+              <View style={styles.cardBox}>
+                <Icon
+                name="check-circle"
+                size={40}
+                color="#30CB00"
+                />
+                <View style={{flexDirection:'column', alignItems: 'flex-end'}}>
+                  <Text style={{color: '#3D73DD', fontSize: 20}}>20 Juli 2020</Text>
+                  <Text style={{color: 'grey', fontSize: 15}}>Waktu Sampai: 10:20</Text>
+                </View>
+              </View>
+            </TouchableNativeFeedback>
           )
         })}
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -77,6 +106,9 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   cardBox:{
+    alignItems: 'center',
+    flexDirection:'row',
+    justifyContent: 'space-between',
     backgroundColor: '#ffffff',
     padding: 20,
     marginBottom: 10,

@@ -3,6 +3,7 @@ import Maps from './pages/Maps'
 import AllTrips from './pages/AllTrips'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import DetailTrip from './pages/DetailTrip'
 // import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
@@ -20,6 +21,7 @@ export default function App(){
             <Stack.Screen name="Dashboard" component={Dashboard} />
             <Stack.Screen name="Maps" component={Maps} />
             <Stack.Screen name="All Trips" component={AllTrips} />
+            <Stack.Screen name="Detail Trip" component={DetailTrip} />
         </Stack.Navigator>
       </NavigationContainer>
     </ApolloProvider>
