@@ -115,8 +115,17 @@ export default function Home() {
             />
           </Col>
           <Col sm="4">
-            <Button onClick={addAddress} variant="outline-info">
+            {/* <Button onClick={addAddress} variant="outline-info">
               Tambah Alamat
+            </Button> */}
+            <Button
+              onClick={addAddress}
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              endIcon={<Icon>send</Icon>}
+            >
+              Add Address
             </Button>
           </Col>
         </Form.Group>
@@ -125,7 +134,7 @@ export default function Home() {
           <Col sm="3"></Col>
           <Col sm="9">
             {form.addresses.length < 1 ? (
-              <p>...</p>
+              <p></p>
             ) : (
               form.addresses.map((address, idx) => (
                 // <Button
@@ -158,7 +167,17 @@ export default function Home() {
         </Form.Group>
 
         <div className="text-center">
-          <Button className="mt-5" variant="outline-primary" type="submit">
+          {/* <Button className="mt-5" variant="outline-primary" type="submit">
+            Submit Trip
+          </Button> */}
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            size="large"
+            className={classes.button}
+            startIcon={<SaveIcon />}
+          >
             Submit Trip
           </Button>
         </div>

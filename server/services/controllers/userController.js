@@ -74,9 +74,9 @@ class Controller {
       .catch(console.log);
   }
   static listOne(req, res, next) {
-    const { username } = req.params;
-    console.log(username)
-    User.findOne(username)
+    const { userId } = req.params;
+    // console.log(userId);
+    User.findOne(userId)
       .then((data) => {
         if (data) {
           res.status(200).json(data);
