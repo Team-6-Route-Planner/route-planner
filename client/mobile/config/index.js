@@ -1,11 +1,12 @@
 import {ApolloClient, InMemoryCache, makeVar} from '@apollo/client'
 
-const myUser = makeVar({
-  "id": 1,
-  "name": "Bambang Wokya"
+export const myUser = makeVar({
+  // id: "5f1c46050480aa0638d44e62",
+  // name: "Bambang"
 })
 
 export const myTrips = makeVar([])
+export const myOngoingTrip = makeVar(null)
 
 const cache = new InMemoryCache({
   typePolicies:{
@@ -20,6 +21,11 @@ const cache = new InMemoryCache({
           read(){
             return myTrips()
           }
+        },
+        ongoingTrip:{
+          read(){
+            return myOngoingTrip()
+          }
         }
       }
     }
@@ -27,9 +33,9 @@ const cache = new InMemoryCache({
 })
 
 const client  = new ApolloClient({
-  uri: 'http://localhost:3000',
+  uri: 'http://192.168.1.107:4000/',
+  // uri: 'http://172.16.21.150:4000/',
   cache
 })
 
 export default client;
-

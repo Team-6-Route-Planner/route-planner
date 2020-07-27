@@ -1,11 +1,9 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, Text, Image, FlatList} from 'react-native'
+import {ScrollView, View, StyleSheet, Text, Image, TouchableNativeFeedback} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
-import {Button} from 'react-native-elements'
 import {gql, useQuery} from '@apollo/client'
-import trip from '../fakeData'
-import {myTrips} from '../config'
+import {myTrips, myUser, myOngoingTrip} from '../config'
 
 const GET_USER = gql`
   query{
@@ -13,32 +11,85 @@ const GET_USER = gql`
   }
 `
 
+const GET_HISTORY_TRIPS = gql`
+  query GetHistoryTripsById($UserId: String){
+    getHistory(userId: $UserId){
+      _id
+      routes {lat lng address}
+      status
+      userId
+    }
+  }
+`
+
+const GET_CURRENT_TRIPS = gql`
+  query GetCurrentTripsById($UserId: String){
+    getCurrentTrip(userId: $UserId){
+      _id
+      routes {lat lng address}
+      status
+      userId
+    }
+  }
+`
+
+const GET_TRIPS = gql`
+  query{
+    trips @client
+  }
+`
+
 export default ({navigation}) => {
-  const {loading, data, error} = useQuery(GET_USER)
-  myTrips([...trip])
+  const user = myUser();
+  const {loading, data, error} = useQuery(GET_USER, {
+    onError: (err) => {
+      console.log(err)
+    }
+  })
+  
+  const {data:historyTrips, error:errorTrips} = useQuery(GET_HISTORY_TRIPS,{
+    variables: {
+      UserId: user.id
+    },
+    onCompleted: (data) =>{
+      myTrips([...data.getHistory])
+    },
+    pollInterval: 500
+  })
+
+  const {data:currentTrip, loading:loadingCurrentTrip} = useQuery(GET_CURRENT_TRIPS,{
+    variables: {
+      UserId: user.id
+    },
+    onCompleted: (data) =>{
+      myOngoingTrip(data.getCurrentTrip)
+    },
+    pollInterval: 500
+  })
+
+  
+  
+  const {loading:loadingTrips, data:allHistoryTrips} = useQuery(GET_TRIPS,{
+    pollInterval: 500
+  })
+
+  // myTrips([...trip])
   useEffect(()=>{
     return ()=>{}
   },[])
 
-  if(loading){
+  if(loading || loadingCurrentTrip || loadingTrips){
     return <Text>Loading...</Text>
   }
 
-  if(error){
+  if(error || errorTrips){
     return <Text>Error...</Text>
   }
 
-  const renderItem = (data, index) => {
-    // console.log(trip)
-    return (
-      <View style={styles.cardBox}>
-        <Text style={{color: '#3D73DD', fontSize: 20}}>{data.item.name}</Text>
-      </View>
-    )
-  }
+  const totalTrips = currentTrip.getCurrentTrip ? allHistoryTrips.trips.length + 1 : allHistoryTrips.trips.length;
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <GeneralStatusBarColor backgroundColor="#3D73DD"
       barStyle="light-content"/>
       <View style = {styles.greetingsBox}>
@@ -81,7 +132,7 @@ export default ({navigation}) => {
               fontWeight: 'bold',
               fontSize: 55
             }}>
-              {trip.length + ' '}
+              {(totalTrips) + ' '}
             </Text>
             <Text style={{
               textAlign: 'center',
@@ -99,20 +150,7 @@ export default ({navigation}) => {
       <View style={{
         height: (styles.statusBox.marginBottom/2)*(-1)+40
       }} />
-      <Button
-        buttonStyle={{backgroundColor: '#3D73DD', paddingHorizontal: 20, borderRadius: 20, marginVertical: 15}}
-        icon = {
-          <Icon
-          name="gamepad"
-          size={20}
-          color="white"
-          />
-        }
-        title="   To Maps"
-        onPress={() => navigation.navigate('Maps')}
-        />
-
-      <View>
+      <View style={{marginTop: 20}}>
         <Text style={{
           color: '#3D73DD',
           fontSize: 28,
@@ -128,12 +166,45 @@ export default ({navigation}) => {
         onPress={()=> navigation.navigate('All Trips')}>
           {'lihat semua >'}
         </Text>
-        <FlatList
-         data={trip}
-         keyExtractor = {(_, i) => i}
-         renderItem = {renderItem}/>
+        {/* <Text>{JSON.stringify(allHistoryTrips.trips)}</Text> */}
+        {currentTrip.getCurrentTrip && (
+          <TouchableNativeFeedback
+          onPress={()=>navigation.navigate('Maps', {currentTrip: currentTrip.getCurrentTrip})}>
+          {/* // onPress={()=>navigation.navigate('Current Timeline (temporary)', {trip: currentTrip.getCurrentTrip})}> */}
+            <View style={styles.cardBox}>
+                <Icon
+              name="exclamation-circle"
+              size={40}
+              color="#EE1234"
+              />
+              <View style={{flexDirection:'column', alignItems: 'flex-end'}}>
+                <Text style={{color: '#3D73DD', fontSize: 20}}>22 Juli 2020</Text>
+                <Text style={{color: '#EE1234', fontSize: 15}}>Tekan untuk menuju peta!</Text>
+              </View>
+            </View>
+          </TouchableNativeFeedback>
+        ) }
+        {allHistoryTrips.trips.map((trip, i)=>{
+          return (
+            <TouchableNativeFeedback
+            key={i}
+            onPress={()=>navigation.navigate('Detail Trip', {trip})}>
+              <View style={styles.cardBox}>
+                <Icon
+                name="check-circle"
+                size={40}
+                color="#30CB00"
+                />
+                <View style={{flexDirection:'column', alignItems: 'flex-end'}}>
+                  <Text style={{color: '#3D73DD', fontSize: 20}}>22 Juli 2020</Text>
+                  <Text style={{color: 'grey', fontSize: 15}}>Waktu Sampai: 10:20</Text>
+                </View>
+              </View>
+            </TouchableNativeFeedback>
+          )
+        })}
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -168,6 +239,9 @@ const styles = StyleSheet.create({
     height: 150
   },
   cardBox:{
+    alignItems: 'center',
+    flexDirection:'row',
+    justifyContent: 'space-between',
     backgroundColor: '#ffffff',
     padding: 20,
     marginBottom: 10,

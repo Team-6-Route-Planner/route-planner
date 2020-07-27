@@ -3,11 +3,43 @@ import {Text, View, StyleSheet, Dimensions, TextInput} from 'react-native'
 import {Button} from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
+import {gql, useMutation} from '@apollo/client'
+import {myUser} from '../config'
+const LOGIN = gql`
+  mutation Login($username: String, $password: String){
+    login(username: $username, password: $password){
+      id:_id
+      name:username
+    }
+  }
+`
 
 
 export default ({navigation}) => {
-  const [name, setName] = useState(null);
-  const [password, setPassword] = useState(null)
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('')
+
+  const [loginCheck] = useMutation(LOGIN,{
+    onCompleted: (data)=>{
+      myUser(data.login)
+      navigation.navigate('Dashboard')
+    },
+    onError(err){
+      console.log(err)
+    }
+  })
+
+  const onPress = () =>{
+    loginCheck({
+      variables:{
+        username:name,
+        password
+      }
+    })
+    // .then(_=>{
+    //   navigation.navigate('Dashboard')
+    // })
+  }
 
   return (
     <View style ={styles.container}>
@@ -15,34 +47,33 @@ export default ({navigation}) => {
       barStyle="light-content"/>
       <Text style={{fontWeight:'bold', fontSize:40, color: 'white', marginBottom: 40}}>Routemaster</Text>
       <View style = {styles.box}>
-        <Text style={{fontWeight:'bold',textAlign:'center', color: '#3D73DD', fontSize:20, marginBottom: 20}}>LOGIN</Text>
-        <View style={{justifyItems:'flex-start', width: 200}}>
-          <Text style={{color: '#3D73DD', fontSize:16, marginBottom: -10}}>username</Text>
-        </View>
-        <TextInput maxLength={10} 
+        {/* <Text style={{fontWeight:'bold',textAlign:'center', color: '#3D73DD', fontSize:20, marginBottom: 20}}>LOGIN</Text> */}
+        
+          <Text style={{color: '#3D73DD', fontSize:18, fontWeight: 'bold', marginBottom: -5}}>username</Text>
+        
+        <TextInput 
         style={styles.inputText}
         onChangeText={text=> setName(text)} />
-
-        <View style={{justifyItems:'flex-start', width: 200}}>
-          <Text style={{color: '#3D73DD', fontSize:16, marginBottom: -10}}>password</Text>
-        </View>
-        <TextInput maxLength={10}
+        <Text style={{color: '#3D73DD', fontSize:18, fontWeight: 'bold', marginBottom: -5}}>password</Text>
+        
+        <TextInput
         secureTextEntry
         // textContentType="password" 
         style={styles.inputText}
         onChangeText={text=> setPassword(text)} />
 
         <Button
-        buttonStyle={{backgroundColor: '#3D73DD', paddingHorizontal: 20, borderRadius: 20, marginVertical: 15}}
+        buttonStyle={{backgroundColor: '#3D73DD', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 20, marginVertical: 15}}
         icon = {
           <Icon
-          name="gamepad"
+          name="map-marker"
           size={20}
           color="white"
           />
         }
-        title="   Login"
-        onPress={()=>navigation.navigate('Dashboard')}
+        iconRight
+        title="Login   "
+        onPress={()=>onPress()}
         />
       </View>
     </View>
