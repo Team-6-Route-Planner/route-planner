@@ -30,7 +30,8 @@ class Controller {
       return Trip.create({
         routes,
         userId,
-        status: false
+        status: false,
+        startedAt: new Date()
       })
     })
     .then(data => {
