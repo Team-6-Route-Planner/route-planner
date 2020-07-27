@@ -1,10 +1,25 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Row, Col } from "react-bootstrap";
 import { ADD_TRIP } from "../queries/trip.js";
 import { FETCH_USERS } from "../queries/trip.js";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+import DeleteIcon from "@material-ui/icons/Delete";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import KeyboardVoiceIcon from "@material-ui/icons/KeyboardVoice";
+import Icon from "@material-ui/core/Icon";
+import SaveIcon from "@material-ui/icons/Save";
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
 export default function Home() {
+  const classes = useStyles();
+
   const history = useHistory();
 
   const { loading, error, data } = useQuery(FETCH_USERS);
@@ -113,16 +128,29 @@ export default function Home() {
               <p>...</p>
             ) : (
               form.addresses.map((address, idx) => (
+                // <Button
+                //   variant="secondary"
+                //   className="ml-2 mb-4"
+                //   key={idx}
+                //   onClick={() => {
+                //     deleteAddress(idx);
+                //   }}
+                // >
+                //   {address}
+                //   <span className="ml-3">x</span>
+                // </Button>
                 <Button
-                  variant="secondary"
-                  className="ml-2 mb-4"
+                  variant="contained"
+                  color="secondary"
+                  className={classes.button}
+                  startIcon={<DeleteIcon />}
                   key={idx}
                   onClick={() => {
                     deleteAddress(idx);
                   }}
                 >
                   {address}
-                  <span className="ml-3">x</span>
+                  <span className="ml-3"></span>
                 </Button>
               ))
             )}
