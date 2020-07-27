@@ -170,6 +170,7 @@ export default ({navigation}) => {
         {currentTrip.getCurrentTrip && (
           <TouchableNativeFeedback
           onPress={()=>navigation.navigate('Maps', {currentTrip: currentTrip.getCurrentTrip})}>
+          {/* // onPress={()=>navigation.navigate('Current Timeline (temporary)', {trip: currentTrip.getCurrentTrip})}> */}
             <View style={styles.cardBox}>
                 <Icon
               name="exclamation-circle"

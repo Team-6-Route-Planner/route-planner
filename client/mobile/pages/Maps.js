@@ -5,8 +5,6 @@ import * as Permissions from 'expo-permissions'
 import { StyleSheet, Text, View, Dimensions, ScrollView } from 'react-native';
 import {gql, useMutation} from '@apollo/client'
 import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
-import BottomSheet from 'react-native-simple-bottom-sheet';4
-import TimelineTrip from '../components/TimelineTrip'
 const API_KEY = 'AIzaSyCyNsE0LjFJCgGeT4sJoQFsVZmrCXaw79o'
 
 const SEND_POSITION_INTERVAL = gql`
@@ -132,7 +130,7 @@ export default ({route}) => {
                 })}
               </View>
             )}
-            {/* <MapViewDirections 
+            <MapViewDirections 
               origin={{
                 latitude: currentTrip.routes[0].lat,
                 longitude: currentTrip.routes[0].lng
@@ -160,7 +158,7 @@ export default ({route}) => {
               onError={(errorMessage) => {
                 console.log('GOT AN ERROR');
               }}
-            /> */}
+            />
           </MapView>
           <View style={styles.statisticBox}>
             <View style={{justifyContent: 'space-around'}}>
@@ -246,12 +244,11 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderColor: '#ffffff',
     justifyContent: 'space-around',
-    // height: 170,
+    height: 170,
     backgroundColor: '#3D73DD',
-    marginTop: -20,
+    marginTop: -5,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    marginHorizontal: -30,
     paddingVertical: 10
   }
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import Timeline from 'react-native-timeline-flatlist'
-import {Text} from 'react-native'
+import {Text, View} from 'react-native'
 
 export default ({trip}) => {
   const modifiedKeyTrip = trip.routes.map((point, i)=>{
