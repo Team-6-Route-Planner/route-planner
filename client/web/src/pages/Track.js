@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+require("dotenv").config();
 
 /*import { useQuery } from '@apollo/client'
 import {FETCH_POSITION} from '../queries/trip.js'*/
@@ -32,7 +33,7 @@ export default function Track() {
 
   return (
     <>
-      <LoadScript googleMapsApiKey="AIzaSyCyNsE0LjFJCgGeT4sJoQFsVZmrCXaw79o">
+      <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
         <GoogleMap
           mapContainerStyle={mapStyles}
           zoom={13}

@@ -20,6 +20,7 @@ const typeDefs = gql`
     }
     extend type Query {
         getCurrentTrip(userId: String): Trip
+        getOneTrip(tripId: String): Trip
         getHistory(userId: String): [Trip]
     }
     extend type Mutation {
@@ -40,6 +41,17 @@ const resolvers = {
             return axios({
                 method: 'get',
                 url: `${baseUrl}/${userId}/current`
+            })
+            .then(({ data }) => {
+                return data;
+            })
+            .catch(console.log);
+        },
+        getOneTrip: (_, args) => {
+            const { tripId } = args;
+            return axios({
+                method: 'get',
+                url: `${baseUrl}/${tripId}`
             })
             .then(({ data }) => {
                 return data;

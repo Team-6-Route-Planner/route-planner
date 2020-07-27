@@ -5,7 +5,9 @@ import { useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
 
 export default function ListCourier() {
-  const { loading, error, data } = useQuery(FETCH_All_USER);
+  const { loading, error, data } = useQuery(FETCH_All_USER, {
+    pollInterval: 500,
+  });
 
   if (loading) {
     return <p>Loading</p>;

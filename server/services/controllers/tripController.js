@@ -52,6 +52,14 @@ class Controller {
       })
       .catch(console.log);
   }
+  static getTripById(req, res, next) {
+    const { tripId } = req.params;
+    Trip.findOneTrip(tripId)
+    .then(data => {
+      res.status(200).json(data)
+    })
+    .catch(console.log);
+  }
   static edit(req, res, next) {
     const { id } = req.params;
     const { status } = req.body;

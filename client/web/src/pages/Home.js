@@ -10,6 +10,13 @@ export default function Home() {
   const { loading, error, data } = useQuery(FETCH_USERS);
 
   const [actionSubmit] = useMutation(ADD_TRIP);
+  const [userId, setUserId] = useState("");
+
+  function onChangeUserId(e) {
+    const { value } = e.target;
+    setUserId(value);
+    console.log(value);
+  }
 
   const [form, setForm] = useState({
     addresses: [],
@@ -37,14 +44,15 @@ export default function Home() {
     event.preventDefault();
     let dataSubmission = { ...form };
     console.log(dataSubmission, "<<< datasub");
+    console.log(userId);
     actionSubmit({
       variables: {
         addresses: dataSubmission.addresses,
-        userId: "5f1b1d644ebba5e6035711b6",
+        userId,
       },
     })
       .then((_) => {
-        history.push("/");
+        history.push("/listcourier");
       })
       .catch((err) => console.log(err));
   };
@@ -61,7 +69,15 @@ export default function Home() {
             Petugas Kurir
           </Form.Label>
           <Col sm="5">
-            <Form.Control as="select" className="users">
+            <Form.Control
+              as="select"
+              className="users"
+              value={userId}
+              onChange={(e) => onChangeUserId(e)}
+            >
+              <option disabled value="">
+                Select Courier
+              </option>
               {data.getAvailables.map((user) => (
                 <option key={user._id} value={user._id}>
                   {user.username}
