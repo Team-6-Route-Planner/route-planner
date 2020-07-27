@@ -100,14 +100,14 @@ describe('SUCCESS GET /availables', function() {
 describe('SUCCESS PUT LOCATION /:id', function() {
     it('responds with message in json', function(done) {
       request(app)
-        .put('/5f1b1d644ebba5e6035711b6')
+        .put(`/${global.userId}`)
         .send({lat: -6.275246399999999, lng: 106.7735448})
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .then(response => {
             const { body, status } = response;
             expect(status).toBe(200);
-            expect(body).toHaveProperty('username', 'jihad');
+            expect(body.username).toEqual(global.username);
             expect(body).toHaveProperty('lat', -6.275246399999999);
             expect(body).toHaveProperty('lng', 106.7735448);
             done();
@@ -124,6 +124,20 @@ describe('SUCCESS GET /:username', function() {
             const { body, status } = response;
             expect(status).toBe(200);
             expect(body).toHaveProperty('_id', expect.any(String));
+            done();
+        })
+    });
+});
+describe('SUCCESS GET /all', function() {
+    it('responds with data in json', function(done) {
+      request(app)
+        .get('/all')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .then(response => {
+            const { body, status } = response;
+            expect(status).toBe(200);
+            expect(body).toEqual(expect.any(Array));
             done();
         })
     });

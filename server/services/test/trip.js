@@ -22,10 +22,11 @@ describe('SUCCESS POST /trips', function() {
             const { body, status } = response;
             global.tripId = body._id;
             global.routeId = body.routes[0]._id;
+            console.log(global.tripId, '<< trip id global')
             expect(status).toBe(201);
             expect(body).toHaveProperty('_id', expect.any(String));
             expect(body.status).toBeFalsy();
-            // expect(body.userId).toMatch(global.userId);
+            expect(body.userId).toMatch(global.userId);
             expect(body).toHaveProperty('routes', expect.any(Array));
             done();
         })
@@ -66,6 +67,34 @@ describe('SUCCESS GET /trips', function() {
             const { body, status } = response;
             expect(status).toBe(200);
             expect(body).toEqual(expect.any(Array));
+            done();
+        })
+    });
+});
+describe('SUCCESS GET /tripId', function() {
+    it('responds with data in json', function(done) {
+      request(app)
+        .get(`/trips/${global.tripId}`)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .then(response => {
+            const { body, status } = response;
+            expect(status).toBe(200);
+            expect(body).toHaveProperty('_id', expect.any(String));
+            done();
+        })
+    });
+});
+describe('NOT FOUND GET /tripId', function() {
+    it('responds with data in json', function(done) {
+      request(app)
+        .get(`/trips/somerandomid`)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .then(response => {
+            const { body, status } = response;
+            expect(status).toBe(404);
+            expect(body).toHaveProperty('message', 'Data not found');
             done();
         })
     });
