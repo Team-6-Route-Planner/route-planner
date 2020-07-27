@@ -56,7 +56,11 @@ class Controller {
     const { tripId } = req.params;
     Trip.findOneTrip(tripId)
     .then(data => {
-      res.status(200).json(data)
+      if(!data) {
+        res.status(404).json({ message: 'Data not found' });
+      } else {
+        res.status(200).json(data);
+      }
     })
     .catch(console.log);
   }
