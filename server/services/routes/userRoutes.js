@@ -6,7 +6,7 @@ router.post("/login", Controller.login);
 
 router.get("/availables", Controller.listAvailable);
 router.get("/all", Controller.listAllUser);
-router.get("/:username", Controller.listOne);
+router.get("/:userId", Controller.listOne);
 router.put("/:id", Controller.upLocation);
 
 module.exports = router;

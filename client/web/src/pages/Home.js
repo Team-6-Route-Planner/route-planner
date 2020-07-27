@@ -1,10 +1,25 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Row, Col } from "react-bootstrap";
 import { ADD_TRIP } from "../queries/trip.js";
 import { FETCH_USERS } from "../queries/trip.js";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+import DeleteIcon from "@material-ui/icons/Delete";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import KeyboardVoiceIcon from "@material-ui/icons/KeyboardVoice";
+import Icon from "@material-ui/core/Icon";
+import SaveIcon from "@material-ui/icons/Save";
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
 export default function Home() {
+  const classes = useStyles();
+
   const history = useHistory();
 
   const { loading, error, data } = useQuery(FETCH_USERS);
@@ -100,8 +115,17 @@ export default function Home() {
             />
           </Col>
           <Col sm="4">
-            <Button onClick={addAddress} variant="outline-info">
+            {/* <Button onClick={addAddress} variant="outline-info">
               Tambah Alamat
+            </Button> */}
+            <Button
+              onClick={addAddress}
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              endIcon={<Icon>send</Icon>}
+            >
+              Add Address
             </Button>
           </Col>
         </Form.Group>
@@ -110,19 +134,32 @@ export default function Home() {
           <Col sm="3"></Col>
           <Col sm="9">
             {form.addresses.length < 1 ? (
-              <p>...</p>
+              <p></p>
             ) : (
               form.addresses.map((address, idx) => (
+                // <Button
+                //   variant="secondary"
+                //   className="ml-2 mb-4"
+                //   key={idx}
+                //   onClick={() => {
+                //     deleteAddress(idx);
+                //   }}
+                // >
+                //   {address}
+                //   <span className="ml-3">x</span>
+                // </Button>
                 <Button
-                  variant="secondary"
-                  className="ml-2 mb-4"
+                  variant="contained"
+                  color="secondary"
+                  className={classes.button}
+                  startIcon={<DeleteIcon />}
                   key={idx}
                   onClick={() => {
                     deleteAddress(idx);
                   }}
                 >
                   {address}
-                  <span className="ml-3">x</span>
+                  <span className="ml-3"></span>
                 </Button>
               ))
             )}
@@ -130,7 +167,17 @@ export default function Home() {
         </Form.Group>
 
         <div className="text-center">
-          <Button className="mt-5" variant="outline-primary" type="submit">
+          {/* <Button className="mt-5" variant="outline-primary" type="submit">
+            Submit Trip
+          </Button> */}
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            size="large"
+            className={classes.button}
+            startIcon={<SaveIcon />}
+          >
             Submit Trip
           </Button>
         </div>

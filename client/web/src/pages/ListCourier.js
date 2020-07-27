@@ -39,7 +39,12 @@ export default function ListCourier() {
                 <td>{user.username}</td>
                 <td>{user.status ? "available" : "on delivery"}</td>
                 <td>
-                  <Button variant="outline-info">Lihat Lokasi</Button>
+                  {/* {JSON.stringify(user)} */}
+                  {user.lat && (
+                    <Button variant="outline-info">
+                      <Link to={`/track/${user._id}`}>Location</Link>
+                    </Button>
+                  )}
                   {!user.status && (
                     <Button variant="outline-info">
                       <Link to={`/detailstrip/${user._id}`}>Details</Link>

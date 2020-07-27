@@ -10,8 +10,8 @@ export const FETCH_USERS = gql`
 `;
 
 export const FETCH_POSITION = gql`
-  query {
-    getUser {
+  query($userId: ID) {
+    getUser(id: $userId) {
       _id
       lat
       lng
@@ -54,6 +54,8 @@ export const FETCH_All_USER = gql`
       _id
       username
       status
+      lat
+      lng
     }
   }
 `;

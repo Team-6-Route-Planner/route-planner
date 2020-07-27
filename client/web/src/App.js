@@ -27,7 +27,7 @@ export default function App() {
             <Route exact path="/listcourier">
               <ListCourier />
             </Route>
-            <Route exact path="/track">
+            <Route exact path="/track/:userId">
               <Track />
             </Route>
             <Route exact path="/detailstrip/:userId">
