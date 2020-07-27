@@ -94,7 +94,7 @@ class Controller {
         let promises = [];
         data.forEach((user) => {
           promises.push(Trip.findCurrent(String(user._id)));
-          console.log(user._id);
+          // console.log(user._id);
         });
         return Promise.all(promises);
       })

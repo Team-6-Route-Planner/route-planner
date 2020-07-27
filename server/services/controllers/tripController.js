@@ -52,6 +52,18 @@ class Controller {
       })
       .catch(console.log);
   }
+  static getTripById(req, res, next) {
+    const { tripId } = req.params;
+    Trip.findOneTrip(tripId)
+    .then(data => {
+      if(!data) {
+        res.status(404).json({ message: 'Data not found' });
+      } else {
+        res.status(200).json(data);
+      }
+    })
+    .catch(console.log);
+  }
   static edit(req, res, next) {
     const { id } = req.params;
     const { status } = req.body;

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useQuery, from } from "@apollo/client";
 import { DETAILS_TRIP } from "../queries/trip";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Timeline from "@material-ui/lab/Timeline";
 import TimelineItem from "@material-ui/lab/TimelineItem";
@@ -36,6 +36,7 @@ export default function History() {
     variables: {
       userId,
     },
+    pollInterval: 500,
   });
 
   if (loading) {
@@ -66,7 +67,7 @@ export default function History() {
                 >
                   <Deliver />
                 </TimelineDot>
-                <TimelineConnector />
+                <TimelineConnector style={{ height: 50 }} />
               </TimelineSeparator>
               <TimelineContent>
                 <Paper elevation={3} className={classes.paper}>
