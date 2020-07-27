@@ -8,7 +8,7 @@ import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
 const API_KEY = 'AIzaSyCyNsE0LjFJCgGeT4sJoQFsVZmrCXaw79o'
 
 const SEND_POSITION_INTERVAL = gql`
-  mutation UpdateLocation($userId: String, $lat: Number, $lng: Number) {
+  mutation UpdateLocation($userId: String, $lat: Float, $lng: Float) {
     updateLocation(
       userId: $userId,
       lat: $lat,
@@ -130,7 +130,7 @@ export default ({route}) => {
                 })}
               </View>
             )}
-            <MapViewDirections 
+            {/* <MapViewDirections 
               origin={{
                 latitude: currentTrip.routes[0].lat,
                 longitude: currentTrip.routes[0].lng
@@ -158,7 +158,7 @@ export default ({route}) => {
               onError={(errorMessage) => {
                 console.log('GOT AN ERROR');
               }}
-            />
+            /> */}
           </MapView>
           <View style={styles.statisticBox}>
             <View style={{justifyContent: 'space-around'}}>

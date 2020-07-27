@@ -75,6 +75,7 @@ class Controller {
   }
   static listOne(req, res, next) {
     const { username } = req.params;
+    console.log(username)
     User.findOne(username)
       .then((data) => {
         if (data) {

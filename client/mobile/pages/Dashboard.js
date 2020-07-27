@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, Text, Image, TouchableNativeFeedback} from 'react-native'
+import {ScrollView, View, StyleSheet, Text, Image, TouchableNativeFeedback} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
 import {gql, useQuery} from '@apollo/client'
@@ -17,6 +17,7 @@ const GET_HISTORY_TRIPS = gql`
       _id
       routes {lat lng address}
       status
+      userId
     }
   }
 `
@@ -27,6 +28,7 @@ const GET_CURRENT_TRIPS = gql`
       _id
       routes {lat lng address}
       status
+      userId
     }
   }
 `
@@ -51,7 +53,8 @@ export default ({navigation}) => {
     },
     onCompleted: (data) =>{
       myTrips([...data.getHistory])
-    }
+    },
+    pollInterval: 500
   })
 
   const {data:currentTrip, loading:loadingCurrentTrip} = useQuery(GET_CURRENT_TRIPS,{
@@ -60,7 +63,8 @@ export default ({navigation}) => {
     },
     onCompleted: (data) =>{
       myOngoingTrip(data.getCurrentTrip)
-    }
+    },
+    pollInterval: 500
   })
 
   
@@ -83,7 +87,7 @@ export default ({navigation}) => {
   const totalTrips = currentTrip.getCurrentTrip ? allHistoryTrips.trips.length + 1 : allHistoryTrips.trips.length;
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <GeneralStatusBarColor backgroundColor="#3D73DD"
       barStyle="light-content"/>
       <View style = {styles.greetingsBox}>
@@ -197,7 +201,7 @@ export default ({navigation}) => {
           )
         })}
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
