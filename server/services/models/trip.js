@@ -1,5 +1,5 @@
 const db = require("../configs/mongo");
-const Trip = db.collection(process.env.COLLECTION_NAME);
+const Trip = db.collection(process.env.TRIP_COLLECTION_NAME);
 const { ObjectId } = require("mongodb");
 
 class TripModel {
@@ -15,6 +15,9 @@ class TripModel {
   static findDones(id) {
     return Trip.find({ userId: id, status: true }).toArray();
   }
+  // static findOneTrip(tripId) {
+  //   return Trip.findOne({ _id: ObjectId(tripId) });
+  // }
   static update(id, updatedTrip) {
     return Trip.findOneAndUpdate(
       { _id: ObjectId(id) },

@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Nav, Navbar } from 'react-bootstrap';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Nav, Navbar } from "react-bootstrap";
 
 export default () => {
   return (
@@ -16,6 +16,9 @@ export default () => {
           </Nav.Link>
           <Nav.Link as={Link} to="/track">
             Track Courier
+          </Nav.Link>
+          <Nav.Link as={Link} to="/listcourier">
+            Daftar Kurir
           </Nav.Link>
         </Nav>
       </Navbar.Collapse>

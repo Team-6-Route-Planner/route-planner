@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('./app');
+const app = require('../app');
 
 describe('SUCCESS /register', function() {
     it('responds with data in json', function(done) {
@@ -10,6 +10,8 @@ describe('SUCCESS /register', function() {
         .expect('Content-Type', /json/)
         .then(response => {
             const { body, status } = response;
+            global.userId = body._id;
+            global.username = body.username
             expect(status).toBe(201);
             expect(body).toHaveProperty('_id', expect.any(String));
             expect(body).toHaveProperty('username', 'test');
@@ -76,7 +78,66 @@ describe('NOT FOUND /login', function() {
         .then(response => {
             const { body, status } = response;
             expect(status).toBe(404);
-            expect(body).toHaveProperty('message', 'Username not found');
+            expect(body).toHaveProperty('message', 'User not found');
+            done();
+        })
+    });
+});
+describe('SUCCESS GET /availables', function() {
+    it('responds with data in json', function(done) {
+      request(app)
+        .get('/availables')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .then(response => {
+            const { body, status } = response;
+            expect(status).toBe(200);
+            expect(body).toEqual(expect.any(Array));
+            done();
+        })
+    });
+});
+describe('SUCCESS PUT LOCATION /:id', function() {
+    it('responds with message in json', function(done) {
+      request(app)
+        .put('/5f1b1d644ebba5e6035711b6')
+        .send({lat: -6.275246399999999, lng: 106.7735448})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .then(response => {
+            const { body, status } = response;
+            expect(status).toBe(200);
+            expect(body).toHaveProperty('username', 'jihad');
+            expect(body).toHaveProperty('lat', -6.275246399999999);
+            expect(body).toHaveProperty('lng', 106.7735448);
+            done();
+        })
+    });
+});
+describe('SUCCESS GET /:username', function() {
+    it('responds with data in json', function(done) {
+      request(app)
+        .get('/jihad')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .then(response => {
+            const { body, status } = response;
+            expect(status).toBe(200);
+            expect(body).toHaveProperty('_id', expect.any(String));
+            done();
+        })
+    });
+});
+describe('NOT FOUND /:username', function() {
+    it('responds with data in json', function(done) {
+      request(app)
+        .get('/shouldnotfound')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .then(response => {
+            const { body, status } = response;
+            expect(status).toBe(404);
+            expect(body).toHaveProperty('message', 'User not found');
             done();
         })
     });
