@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView, View, StyleSheet, Text, Image, TouchableNativeFeedback} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
@@ -62,12 +62,15 @@ export default ({navigation}) => {
       UserId: user.id
     },
     onCompleted: (data) =>{
-      myOngoingTrip(data.getCurrentTrip)
+      // console.log(data.getCurrentTrip)
+      // if(data.getCurrentTrip){
+        myOngoingTrip(data.getCurrentTrip)
+      // } else{
+        // myOngoingTrip(null)
+      // }
     },
     pollInterval: 500
   })
-
-  
   
   const {loading:loadingTrips, data:allHistoryTrips} = useQuery(GET_TRIPS,{
     pollInterval: 500
@@ -79,7 +82,11 @@ export default ({navigation}) => {
   },[])
 
   if(loading || loadingCurrentTrip || loadingTrips){
-    return <Text>Loading...</Text>
+    return (
+      <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+        <Text>Loading...</Text>
+      </View>
+    )
   }
 
   if(error || errorTrips){
@@ -99,9 +106,7 @@ export default ({navigation}) => {
           marginBottom: 10,
           marginLeft: -10,
           borderRadius: 100
-        }} source={{
-          uri: 'https://static.scientificamerican.com/sciam/cache/file/92E141F8-36E4-4331-BB2EE42AC8674DD3_source.jpg'
-        }} />
+        }} source={require('../assets/no-photo.png')} />
         <Text style = {{
           ...styles.greetingsText,
           fontSize: 25
@@ -115,37 +120,49 @@ export default ({navigation}) => {
         }}>
           {data.user.name.split(' ')[0]}
         </Text>
-        <View style ={styles.statusBox}>
-          <Text style={{
-            textAlign: 'center',
-            color: '#3D73DD',
-            fontWeight: 'bold',
-            fontSize: 20
-          }}>Total Perjalananmu</Text>
-          <View style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-            <Text style={{
-              textAlign: 'center',
-              color: '#3D73DD',
-              fontWeight: 'bold',
-              fontSize: 55
-            }}>
-              {(totalTrips) + ' '}
-            </Text>
-            <Text style={{
-              textAlign: 'center',
-              alignSelf:'flex-end',
-              color: '#3D73DD',
-              fontWeight: 'bold',
-              fontSize: 20,
-              marginBottom: 10
-            }}>
-              perjalanan
-            </Text>
+        <TouchableNativeFeedback
+        onPress={()=> {
+          if(currentTrip.getCurrentTrip){
+            navigation.navigate('Maps', {currentTrip: currentTrip.getCurrentTrip})
+          }
+        }}>
+          <View style ={styles.statusBox}>
+            {currentTrip.getCurrentTrip ? (
+              <View style={{flexDirection: 'row'}}>
+                <Icon
+                style
+                name="truck"
+                size={100}
+                color={'#3D73DD'}
+                />
+                <View style={{
+                  marginHorizontal: 20,
+                  flexDirection: 'column',
+                  alignItems:'center',
+                  justifyContent: 'center',
+                  flexWrap: 'wrap'
+                }}>
+                  <Text style={{
+                    color: '#3D73DD',
+                    fontSize: 25,
+                    fontWeight: 'bold'
+                  }}>Ada Paket!</Text>
+                  <Text style={{
+                    width: 100,
+                    textAlign: 'center',
+                    fontSize: 15,
+                    color: '#EE1234',
+                    flexWrap: 'wrap'
+                  }}>Tekan untuk menuju peta!</Text>
+                </View>
+              </View>
+            ) : (
+              <View>
+                <Text style={{fontSize: 20}}>No trip.</Text>
+              </View>
+            ) }
           </View>
-        </View>
+        </TouchableNativeFeedback>
       </View>
       <View style={{
         height: (styles.statusBox.marginBottom/2)*(-1)+40
@@ -169,8 +186,8 @@ export default ({navigation}) => {
         {/* <Text>{JSON.stringify(allHistoryTrips.trips)}</Text> */}
         {currentTrip.getCurrentTrip && (
           <TouchableNativeFeedback
-          onPress={()=>navigation.navigate('Maps', {currentTrip: currentTrip.getCurrentTrip})}>
-          {/* // onPress={()=>navigation.navigate('Current Timeline (temporary)', {trip: currentTrip.getCurrentTrip})}> */}
+          // onPress={()=>navigation.navigate('Maps', {currentTrip: currentTrip.getCurrentTrip})}
+          onPress={()=>navigation.navigate('Current Timeline (temporary)', {trip: currentTrip.getCurrentTrip})}>
             <View style={styles.cardBox}>
                 <Icon
               name="exclamation-circle"
@@ -185,23 +202,25 @@ export default ({navigation}) => {
           </TouchableNativeFeedback>
         ) }
         {allHistoryTrips.trips.map((trip, i)=>{
-          return (
-            <TouchableNativeFeedback
-            key={i}
-            onPress={()=>navigation.navigate('Detail Trip', {trip})}>
-              <View style={styles.cardBox}>
-                <Icon
-                name="check-circle"
-                size={40}
-                color="#30CB00"
-                />
-                <View style={{flexDirection:'column', alignItems: 'flex-end'}}>
-                  <Text style={{color: '#3D73DD', fontSize: 20}}>22 Juli 2020</Text>
-                  <Text style={{color: 'grey', fontSize: 15}}>Waktu Sampai: 10:20</Text>
+          if(i<=2){
+            return (
+              <TouchableNativeFeedback
+              key={i}
+              onPress={()=>navigation.navigate('Detail Trip', {trip})}>
+                <View style={styles.cardBox}>
+                  <Icon
+                  name="check-circle"
+                  size={40}
+                  color="#30CB00"
+                  />
+                  <View style={{flexDirection:'column', alignItems: 'flex-end'}}>
+                    <Text style={{color: '#3D73DD', fontSize: 20}}>22 Juli 2020</Text>
+                    <Text style={{color: 'grey', fontSize: 15}}>Waktu Sampai: 10:20</Text>
+                  </View>
                 </View>
-              </View>
-            </TouchableNativeFeedback>
-          )
+              </TouchableNativeFeedback>
+            )
+          }
         })}
       </View>
     </ScrollView>
@@ -210,7 +229,7 @@ export default ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#E5E5E5',
+    backgroundColor: '#eeeeee',
     flex: 1
   },
   greetingsBox:{

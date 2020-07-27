@@ -11,9 +11,20 @@ const GET_TRIPS = gql`
   }
 `
 
+const GET_ONGOING_TRIPS = gql`
+  query{
+    ongoingTrips @client
+  }
+`
+
 export default ({navigation}) => {
-  const {loading, data:allHistoryTrips, error} = useQuery(GET_TRIPS)
-  const ongoingTrip = myOngoingTrip()
+  const {loading, data:allHistoryTrips, error} = useQuery(GET_TRIPS,{
+    pollInterval: 500
+  })
+  const {data: ongoingTrip} = useQuery(GET_ONGOING_TRIPS,{
+    pollInterval: 500
+  })
+
   useEffect(()=>{
     return ()=>{}
   },[])

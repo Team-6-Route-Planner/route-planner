@@ -13,6 +13,7 @@ import client from './config'
 
 
 export default function App(){
+  // console.disableYellowBox = true;
   const Stack = createStackNavigator()
   return (
     <ApolloProvider client={client}>

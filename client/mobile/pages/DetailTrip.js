@@ -1,12 +1,14 @@
 import React from 'react';
 import {ScrollView, View, Text, StyleSheet} from 'react-native'
 import TimelineTrip from '../components/TimelineTrip'
+import Back from '../components/Back'
 
-export default ({route}) => {
+export default ({navigation, route}) => {
   const {trip} = route.params;
 
   return (
       <ScrollView style={styles.container}>
+        <Back navigation={navigation} color='#ffffff'/>
         <View style={styles.greetingsBox}>
           <Text style = {{
               ...styles.greetingsText,
@@ -23,7 +25,7 @@ export default ({route}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#E5E5E5',
+    backgroundColor: '#eeeeee',
     flex: 1
   },
   greetingsBox:{
