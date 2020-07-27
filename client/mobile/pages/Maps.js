@@ -2,9 +2,11 @@ import React, {useState, useEffect} from 'react';
 import MapView, {Marker, Callout} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions'
 import * as Permissions from 'expo-permissions'
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, ScrollView } from 'react-native';
 import {gql, useMutation} from '@apollo/client'
 import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
+import BottomSheet from 'react-native-simple-bottom-sheet';4
+import TimelineTrip from '../components/TimelineTrip'
 const API_KEY = 'AIzaSyCyNsE0LjFJCgGeT4sJoQFsVZmrCXaw79o'
 
 const SEND_POSITION_INTERVAL = gql`
@@ -86,13 +88,13 @@ export default ({route}) => {
     return ()=> {abortController.abort()}
   },[getPosition])
 
+
   return (
     <View style={styles.container}>
       <GeneralStatusBarColor backgroundColor="#3D73DD"
       barStyle="light-content"/>
       {myPosition.latitude && (
         <View>
-
           <MapView
           showsUserLocation
           style={styles.mapStyle}
@@ -141,7 +143,7 @@ export default ({route}) => {
               }}
               waypoints = {waypoint()}
               apikey={API_KEY}
-              strokeWidth={3}
+              strokeWidth={4}
               strokeColor="blue"
               // optimizeWaypoints={true}
               onStart={(params) => {
@@ -188,7 +190,7 @@ export default ({route}) => {
                   }}>
                     {' km'}
                   </Text>
-              </View>              
+              </View>       
             </View>
             <View style={{height: 125, width: 5, backgroundColor: '#ffffff', alignSelf: 'center', marginHorizontal: -30}} />
             <View style={{justifyContent: 'space-around'}}>
@@ -199,26 +201,26 @@ export default ({route}) => {
                   textAlign: 'center'
                 }}>
                   Total Durasi
+              </Text>
+              <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+                <Text style={{
+                  color: '#ffffff',
+                  fontSize: 50,
+                  fontWeight: 'bold',
+                  textAlign: 'center'
+                }}>
+                  {Math.floor(distanceAndDuration.duration)}
                 </Text>
-                <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
-                  <Text style={{
-                    color: '#ffffff',
-                    fontSize: 50,
-                    fontWeight: 'bold',
-                    textAlign: 'center'
-                  }}>
-                    {Math.floor(distanceAndDuration.duration)}
-                  </Text>
-                  <Text style={{
-                    color: '#ffffff',
-                    fontSize: 20,
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    marginBottom: 10
-                  }}>
-                    {' menit'}
-                  </Text>
-                </View>
+                <Text style={{
+                  color: '#ffffff',
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                  marginBottom: 10
+                }}>
+                  {' menit'}
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -244,11 +246,12 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderColor: '#ffffff',
     justifyContent: 'space-around',
-    height: 170,
+    // height: 170,
     backgroundColor: '#3D73DD',
-    marginTop: -5,
+    marginTop: -20,
     borderTopLeftRadius: 30,
-    borderTopRightRadius: 20,
+    borderTopRightRadius: 30,
+    marginHorizontal: -30,
     paddingVertical: 10
   }
 });

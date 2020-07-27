@@ -1,6 +1,5 @@
 import React from 'react';
 import {ScrollView, View, Text, StyleSheet} from 'react-native'
-import Timeline from 'react-native-timeline-flatlist'
 import TimelineTrip from '../components/TimelineTrip'
 
 export default ({route}) => {

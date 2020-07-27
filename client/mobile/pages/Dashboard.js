@@ -69,7 +69,9 @@ export default ({navigation}) => {
 
   
   
-  const {loading:loadingTrips, data:allHistoryTrips} = useQuery(GET_TRIPS)
+  const {loading:loadingTrips, data:allHistoryTrips} = useQuery(GET_TRIPS,{
+    pollInterval: 500
+  })
 
   // myTrips([...trip])
   useEffect(()=>{
@@ -186,7 +188,7 @@ export default ({navigation}) => {
             <TouchableNativeFeedback
             key={i}
             onPress={()=>navigation.navigate('Detail Trip', {trip})}>
-                <View style={styles.cardBox}>
+              <View style={styles.cardBox}>
                 <Icon
                 name="check-circle"
                 size={40}
