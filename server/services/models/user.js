@@ -6,12 +6,12 @@ class UserModel {
   static signUp(newUser) {
     return User.insertOne(newUser);
   }
-  static findOne(id) {
-    return User.findOne({ _id: ObjectId(id) });
+  static findOne(username) {
+    return User.findOne({ "username": username });
   }
-  // static findByPk(id) {
-  //     return User.findOne({ _id: ObjectId(id) });
-  // }
+  static findByPk(id) {
+      return User.findOne({ _id: ObjectId(id) });
+  }
   static findAll() {
     return User.find().toArray();
   }
