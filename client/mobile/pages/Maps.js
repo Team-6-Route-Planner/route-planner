@@ -6,7 +6,6 @@ import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import {gql, useMutation} from '@apollo/client'
 import Back from '../components/Back'
 import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
-import useInterval from '../components/useInterval'
 const API_KEY = 'AIzaSyCyNsE0LjFJCgGeT4sJoQFsVZmrCXaw79o'
 
 const SEND_POSITION_INTERVAL = gql`
@@ -23,6 +22,11 @@ const SEND_POSITION_INTERVAL = gql`
     }
   }
 `
+
+const { width, height } = Dimensions.get('window');
+const ASPECT_RATIO = width / height;
+const LATITUDE_DELTA = 0.0922;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 
 export default ({route, navigation}) => {
@@ -58,13 +62,14 @@ export default ({route, navigation}) => {
   //   longitude: 106.7719658
 
   // }
+  
+  const [mapView, setMapView] = useState(null)
 
   const getPosition = async () => {
     const { status } = await Permissions.getAsync(Permissions.LOCATION)
     if(status !== 'granted'){
       const response = await Permissions.askAsync(Permissions.LOCATION)
     }
-
     navigator.geolocation.getCurrentPosition(
       ({coords: {latitude, longitude}})=> {
         // console.log(latitude, longitude)
@@ -98,7 +103,7 @@ export default ({route, navigation}) => {
     <View style={styles.container}>
       <GeneralStatusBarColor backgroundColor="#3D73DD"
       barStyle="light-content"/>
-      <Back navigation={navigation} color='#3D73DD'/>
+      <Back navigation={navigation} color='#3D73DD' isMap = {true} />
       {myPosition.latitude && (
         <View>
           <MapView
@@ -108,9 +113,12 @@ export default ({route, navigation}) => {
             latitude: myPosition.latitude,
             longitude: myPosition.longitude,
             latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}>
+            longitudeDelta: LONGITUDE_DELTA,
+          }}
+          ref={c =>setMapView(c)}
+          showsMyLocationButton={true}>
             <Marker
+              pinColor = {currentTrip.routes[0].status === 'arrived' ? 'green' : 'yellow'}
               coordinate={{
                 latitude:currentTrip.routes[0].lat,
                 longitude: currentTrip.routes[0].lng
@@ -118,6 +126,7 @@ export default ({route, navigation}) => {
               title={currentTrip.routes[0].address}
             />
             <Marker
+              pinColor = {currentTrip.routes[currentTrip.routes.length-1].status === 'arrived' ? 'green' : null}
               coordinate={{
                 latitude:currentTrip.routes[currentTrip.routes.length-1].lat,
                 longitude: currentTrip.routes[currentTrip.routes.length-1].lng
@@ -129,6 +138,7 @@ export default ({route, navigation}) => {
                 {currentTrip.routes.slice(1,-1).map((coordinate, i)=>{
                   return (
                     <Marker key={i}
+                    pinColor= {coordinate.status === 'arrived' ? 'green' : null}
                     coordinate={{
                       latitude:coordinate.lat,
                       longitude: coordinate.lng
@@ -149,7 +159,7 @@ export default ({route, navigation}) => {
               }}
               waypoints = {waypoint()}
               apikey={API_KEY}
-              strokeWidth={4}
+              strokeWidth={2}
               strokeColor="#3D73DD"
               // optimizeWaypoints={true}
               onStart={(params) => {
@@ -160,6 +170,16 @@ export default ({route, navigation}) => {
                   distance: result.distance,
                   duration: result.duration
                 })
+
+                mapView.fitToCoordinates(result.coordinates, {
+                  edgePadding: {
+                    right: (width / 20),
+                    bottom: (height / 20),
+                    left: (width / 20),
+                    top: (height / 20),
+                  }
+                });
+
                 console.log(`Distance: ${result.distance} km`)
                 console.log(`Duration: ${result.duration} min.`)
               }}
@@ -244,8 +264,8 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     marginTop: 20,
-    width: (Dimensions.get('window').width),
-    height: (Dimensions.get('window').height)-170,
+    width: width,
+    height: height-170,
   },
   statisticBox:{
     flexDirection: 'row',

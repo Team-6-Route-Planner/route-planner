@@ -4,10 +4,11 @@ import {Button} from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
 import {gql, useMutation} from '@apollo/client'
-import {myUser} from '../config'
+import {myUser, myToken} from '../config'
+
 const LOGIN = gql`
-  mutation Login($username: String, $password: String){
-    login(username: $username, password: $password){
+  mutation Login($username: String, $password: String, $deviceToken: String){
+    login(username: $username, password: $password, deviceToken: $deviceToken){
       id:_id
       name:username
     }
@@ -16,12 +17,15 @@ const LOGIN = gql`
 
 
 export default ({navigation}) => {
+  const token = myToken()
   const [name, setName] = useState('');
   const [password, setPassword] = useState('')
 
   const [loginCheck] = useMutation(LOGIN,{
     onCompleted: (data)=>{
       myUser(data.login)
+      setName('')
+      setPassword('')
       navigation.navigate('Dashboard')
     },
     onError(err){
@@ -30,15 +34,16 @@ export default ({navigation}) => {
   })
 
   const onPress = () =>{
-    loginCheck({
-      variables:{
-        username:name,
-        password
-      }
-    })
-    .then(_=>{
+    // loginCheck({
+    //   variables:{
+    //     username:name,
+    //     password,
+    //     deviceToken: token
+    //   }
+    // })
+    // .then(_=>{
       navigation.navigate('Dashboard') // temporary
-    })
+    // })
   }
 
   return (

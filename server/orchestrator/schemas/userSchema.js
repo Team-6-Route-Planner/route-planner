@@ -6,7 +6,7 @@ const typeDefs = gql`
   type User {
     _id: ID
     username: String
-    token: String
+    deviceToken: String
     lat: Float
     lng: Float
     status: Boolean
@@ -18,7 +18,7 @@ const typeDefs = gql`
   }
   extend type Mutation {
     register(username: String, password: String): User
-    login(username: String, password: String): User
+    login(username: String, password: String, deviceToken: String): User
     updateLocation(userId: String, lat: Float, lng: Float): User
   }
 `;
@@ -63,11 +63,12 @@ const resolvers = {
       });
     },
     login: (_, args) => {
-      const { username, password } = args;
+      const { username, password, deviceToken } = args;
+      console.log(deviceToken)
       return axios({
         method: "post",
         url: `${baseUrl}/login`,
-        data: { username, password },
+        data: { username, password, deviceToken },
       }).then(({ data }) => {
         return data;
       });
