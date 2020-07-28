@@ -45,7 +45,7 @@ export default function History() {
   if (error) {
     return <p>Error</p>;
   }
-
+  let deliver = data.getCurrentTrip.routes.filter((trip) => trip.arrivedAt);
   return (
     <div className="mt-4 flex flex-column justify-content-center">
       <center>
@@ -79,7 +79,15 @@ export default function History() {
         })}
         <TimelineItem>
           <TimelineSeparator>
-            <TimelineDot style={data.status && { background: lightgreen[500] }}>
+            <TimelineDot
+              style={
+                deliver.length === data.getCurrentTrip.routes.length
+                  ? {
+                      background: lightgreen[500],
+                    }
+                  : null
+              }
+            >
               <DoneAllIcon />
             </TimelineDot>
           </TimelineSeparator>

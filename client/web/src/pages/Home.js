@@ -121,107 +121,150 @@ export default function Home() {
   if (error) return <p>Error... ${error.message} </p>;
   return (
     <>
-      <Container>
-        <h3 className="mt-4" style={{ fontFamily: "MuseoModerno" }}>
-          Welcome to Admin Page
+      <div
+        className="parallax"
+        style={{
+          backgroundImage: `url(
+              "https://images.unsplash.com/photo-1585501954837-9d99d09aa2c1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3066&q=80"
+            )`,
+          height: "80vh",
+          width: "100vw",
+          backgroundAttachment: "fixed",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <h3
+          style={{ fontFamily: "MuseoModerno", color: "white", fontSize: 100 }}
+        >
+          Welcome to Route Master
         </h3>
-
-        <Form className="mt-5" onSubmit={submitAdd}>
-          <Form.Group as={Row}>
-            <Form.Label column sm="2">
-              Petugas Kurir
-            </Form.Label>
-            <Col sm="6">
-              <FormControl
-                className={classes.margin}
-                as="select"
-                className="users"
-                value={userId}
-                onChange={(e) => onChangeUserId(e)}
-              >
-                <NativeSelect
-                  style={{ width: 500 }}
-                  id="demo-customized-select-native"
-                  value={age}
-                  onChange={handleChange}
-                  input={<BootstrapInput />}
+      </div>
+      <Container
+        style={{
+          height: "60vh",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+      >
+        <div>
+          <h3
+            style={{ fontFamily: "MuseoModerno", color: "black", fontSize: 30 }}
+          >
+            ADD TRIP
+          </h3>
+          <Form className="mt-5" onSubmit={submitAdd}>
+            <Form.Group as={Row}>
+              <Form.Label column sm="2">
+                Petugas Kurir
+              </Form.Label>
+              <Col sm="6">
+                <FormControl
+                  className={classes.margin}
+                  as="select"
+                  className="users"
+                  value={userId}
+                  onChange={(e) => onChangeUserId(e)}
                 >
-                  <option aria-label="None" value="" />
-                  {data.getAvailables.map((user) => (
-                    <option key={user._id} value={user._id}>
-                      {user.username}
-                    </option>
-                  ))}
-                </NativeSelect>
-              </FormControl>
-            </Col>
-          </Form.Group>
+                  <NativeSelect
+                    style={{ width: 500 }}
+                    id="demo-customized-select-native"
+                    value={age}
+                    onChange={handleChange}
+                    input={<BootstrapInput />}
+                  >
+                    <option aria-label="None" value="" />
+                    {data.getAvailables.map((user) => (
+                      <option key={user._id} value={user._id}>
+                        {user.username}
+                      </option>
+                    ))}
+                  </NativeSelect>
+                </FormControl>
+              </Col>
+            </Form.Group>
 
-          <Form.Group as={Row} style={{ alignItems: "center" }}>
-            <Form.Label column sm="2">
-              Alamat Paket
-            </Form.Label>
-            <Col sm="6">
-              <FormControl
-                style={{ width: 500 }}
-                className={classes.margin}
-                type="text"
-                value={address}
-                onChange={changeAddress}
-                placeholder="e.g: Jl. Kp. Kelapa rt 07/012 Pabuaran, Bojong Gede"
-              >
-                <BootstrapInput id="demo-customized-textbox" />
-              </FormControl>
-            </Col>
-            <Col sm="4">
+            <Form.Group as={Row} style={{ alignItems: "center" }}>
+              <Form.Label column sm="2">
+                Alamat Paket
+              </Form.Label>
+              <Col sm="6">
+                <FormControl
+                  style={{ width: 500 }}
+                  className={classes.margin}
+                  type="text"
+                  value={address}
+                  onChange={changeAddress}
+                  placeholder="e.g: Jl. Kp. Kelapa rt 07/012 Pabuaran, Bojong Gede"
+                >
+                  <BootstrapInput id="demo-customized-textbox" />
+                  <Button
+                    onClick={addAddress}
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    endIcon={<Icon>send</Icon>}
+                  >
+                    Add
+                  </Button>
+                </FormControl>
+              </Col>
+              {/* <Col sm="4">
+                <Button
+                  onClick={addAddress}
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  endIcon={<Icon>send</Icon>}
+                ></Button>
+              </Col> */}
+            </Form.Group>
+
+            <Form.Group as={Row}>
+              <Col sm="2"></Col>
+              <Col sm="10">
+                {form.addresses.length < 1 ? (
+                  <p></p>
+                ) : (
+                  form.addresses.map((address, idx) => (
+                    <Button
+                      style={{ marginRight: 5 }}
+                      variant="contained"
+                      color="secondary"
+                      className={classes.button}
+                      startIcon={<DeleteIcon />}
+                      key={idx}
+                      onClick={() => {
+                        deleteAddress(idx);
+                      }}
+                    >
+                      {address}
+                      <span className="ml-3"></span>
+                    </Button>
+                  ))
+                )}
+              </Col>
+            </Form.Group>
+            <div className="text-center">
               <Button
-                onClick={addAddress}
+                type="submit"
                 variant="contained"
                 color="primary"
+                size="large"
                 className={classes.button}
-                endIcon={<Icon>send</Icon>}
-              ></Button>
-            </Col>
-          </Form.Group>
-
-          <Form.Group as={Row}>
-            <Col sm="2"></Col>
-            <Col sm="10">
-              {form.addresses.length < 1 ? (
-                <p></p>
-              ) : (
-                form.addresses.map((address, idx) => (
-                  <Button
-                    style={{ marginRight: 5 }}
-                    variant="contained"
-                    color="secondary"
-                    className={classes.button}
-                    startIcon={<DeleteIcon />}
-                    key={idx}
-                    onClick={() => {
-                      deleteAddress(idx);
-                    }}
-                  >
-                    {address}
-                    <span className="ml-3"></span>
-                  </Button>
-                ))
-              )}
-            </Col>
-          </Form.Group>
-          <div className="text-center">
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
-              className={classes.button}
-              startIcon={<SaveIcon />}
-            >
-              Submit Trip
-            </Button>
-          </div>
-        </Form>
+                startIcon={<SaveIcon />}
+              >
+                Submit Trip
+              </Button>
+            </div>
+          </Form>
+        </div>
       </Container>
     </>
   );

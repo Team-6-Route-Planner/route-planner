@@ -19,22 +19,20 @@ export default function App() {
     <ApolloProvider client={client}>
       <Router>
         <Navbar />
-        <Container>
-          <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route exact path="/listcourier">
-              <ListCourier />
-            </Route>
-            <Route exact path="/track/:userId">
-              <Track />
-            </Route>
-            <Route exact path="/detailstrip/:userId">
-              <Details />
-            </Route>
-          </Switch>
-        </Container>
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route exact path="/listcourier">
+            <ListCourier />
+          </Route>
+          <Route exact path="/track/:userId">
+            <Track />
+          </Route>
+          <Route exact path="/detailstrip/:userId">
+            <Details />
+          </Route>
+        </Switch>
       </Router>
     </ApolloProvider>
   );
