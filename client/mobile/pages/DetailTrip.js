@@ -2,12 +2,13 @@ import React from 'react';
 import {ScrollView, View, Text, StyleSheet} from 'react-native'
 import TimelineTrip from '../components/TimelineTrip'
 import Back from '../components/Back'
+import changeDate from '../helpers/changeDate'
 
 export default ({navigation, route}) => {
   const {trip} = route.params;
 
   return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <Back navigation={navigation} color='#ffffff'/>
         <View style={styles.greetingsBox}>
           <Text style = {{
@@ -15,11 +16,13 @@ export default ({navigation, route}) => {
               fontSize: 35,
               fontWeight: 'bold'
             }}>
-              22 Juli 2020
+              {changeDate(trip.startedAt)}
           </Text>
         </View>
-        <TimelineTrip trip = {trip} />
-      </ScrollView>
+        <View style={{flex:1}}>
+          <TimelineTrip trip = {trip} />
+        </View>
+      </View>
   )
 }
 
