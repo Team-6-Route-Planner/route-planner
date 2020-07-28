@@ -1,9 +1,11 @@
 const Trip = require("../models/trip");
 const Route = require('../models/route');
+const User = require('../models/user');
 const shortestTrip = require("../helpers/shortestTrip");
 class Controller {
   static add(req, res, next) {
     const { addresses, userId } = req.body;
+    let dataTrip;
     shortestTrip(addresses)
     .then(trip => {
       if(!Array.isArray(trip)){
@@ -35,8 +37,17 @@ class Controller {
       })
     })
     .then(data => {
+<<<<<<< HEAD
       Controller.sendPushNotification(userId); // belum diaplikasikan
       res.status(201).json(data.ops[0])
+=======
+      dataTrip = data.ops[0];
+      return User.findByPk(data.ops[0].userId)
+    })
+    .then(data => {
+      Controller.sendPushNotification(data.deviceToken);
+      res.status(200).json(dataTrip);
+>>>>>>> token-server
     })
     .catch(console.log);
   }
@@ -81,9 +92,24 @@ class Controller {
     .catch(console.log);
   }
   
-  static pushNotification(userId) {
-    // push notifikasi ke client mobile sesuai userId
-    console.log(`Notifikasi masuk hp user ${userId}`)
+  static async sendPushNotification(expoPushToken) {
+    const message = {
+      to: expoPushToken,
+      sound: 'default',
+      title: 'Original Title',
+      body: 'And here is the body!',
+      data: { data: 'goes here' },
+    };
+  
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
   }
 
   static async sendPushNotification (expoPushToken) {

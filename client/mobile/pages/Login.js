@@ -35,6 +35,7 @@ export default ({navigation}) => {
     loginCheck({
       variables:{
         username:name,
+<<<<<<< HEAD
         password,
         deviceToken: token
       }
@@ -42,6 +43,14 @@ export default ({navigation}) => {
     // .then(_=>{
       // navigation.navigate('Dashboard') // temporary
     // })
+=======
+        password
+      }
+    })
+    .then(_=>{
+      navigation.navigate('Dashboard') // temporary
+    })
+>>>>>>> token-server
   }
 
   return (

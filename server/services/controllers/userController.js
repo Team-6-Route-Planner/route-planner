@@ -21,6 +21,7 @@ class Controller {
   }
   static login(req, res, next) {
     const { username, password } = req.body;
+    let user;
     User.findOne(username)
       .then((data) => {
         if (!data) {
@@ -35,13 +36,18 @@ class Controller {
             },
             process.env.JWT
           );
-          res.status(200).json({
-            message: "Login success",
-            _id: data._id,
-            username: data.username,
-            token,
-          });
+          user = data;
+          return User.update(data._id, { deviceToken: req.body.deviceToken })
+          
         }
+      })
+      .then(data => {
+        res.status(200).json({
+          message: "Login success",
+          _id: user._id,
+          username: user.username,
+          deviceToken: data.value.deviceToken,
+        });
       })
       .catch(console.log);
   }
