@@ -7,8 +7,8 @@ import {gql, useMutation} from '@apollo/client'
 import {myUser, myToken} from '../config'
 
 const LOGIN = gql`
-  mutation Login($username: String, $password: String){
-    login(username: $username, password: $password){
+  mutation Login($username: String, $password: String, $deviceToken: String){
+    login(username: $username, password: $password, deviceToken: $deviceToken){
       id:_id
       name:username
     }

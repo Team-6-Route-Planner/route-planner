@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {ScrollView, Text, View, StyleSheet} from 'react-native'
 import {Button} from 'react-native-elements'
 import {gql, useMutation, useQuery} from '@apollo/client'
@@ -6,6 +6,7 @@ import {myUser} from '../config'
 import changeDate from '../helpers/changeDate'
 import Back from '../components/Back'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { set } from 'react-native-reanimated';
 
 const EDIT_ROUTE = gql`
   mutation EditRoute($userId: String, $routeId: String, $status: String, $arrivedAt: String){
@@ -57,8 +58,13 @@ export default ({route, navigation}) => {
   })
 
   const currentTrip = route.params.trip
-  const [trip, setTrip] = useState(currentTrip)
-  console.log(trip)
+  const [trip, setTrip] = useState([])
+  useEffect(()=>{
+    setTrip(currentTrip)
+  }, [currentTrip])
+
+
+  // console.log(trip)
   const [EditTripSuccess] = useMutation(EDIT_TRIP_SUCCESS,{
     onCompleted: () =>{
       navigation.navigate('Dashboard')
@@ -71,6 +77,68 @@ export default ({route, navigation}) => {
   // if(data.getCurrentTrip){
     
   // }
+  const onPress = (i, routeId) => {
+    if(i===0){
+      const date = new Date()
+      const hours = date.getHours();
+      const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
+      const time = hours + ':' + minutes;
+      // console.log(time)
+      editRoute({
+        variables:{
+          userId: user.id,
+          routeId: routeId,
+          status: 'arrived',
+          arrivedAt: time
+        }
+      })
+
+      const newRoutes = trip.routes.map((route, j)=>{
+        if(i===j){
+          return {...route, status: 'arrived'}
+        } else{
+          return route
+        }
+      })
+
+      setTrip({...trip, routes: newRoutes})
+
+    } else if(trip.routes[i-1].status === 'arrived'){
+      const date = new Date()
+      const hours = date.getHours();
+      const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
+      const time = hours + ':' + minutes;
+      editRoute({
+        variables:{
+          userId: user.id,
+          routeId: routeId,
+          status: 'arrived',
+          arrivedAt: time
+        }
+      })
+
+      const newRoutes = trip.routes.map((route, j)=>{
+        if(i===j){
+          return {...route, status: 'arrived'}
+        } else{
+          return route
+        }
+      })
+
+      setTrip({...trip, routes: newRoutes})
+
+      if(i === trip.routes.length-1){
+        EditTripSuccess({
+          variables:{
+            tripId: trip._id,
+            status: true
+          }
+        })
+      }
+    } else{
+      console.log('sebelumnya belum tuh')
+    }
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -86,79 +154,43 @@ export default ({route, navigation}) => {
           </Text>
         </View>
         <View style={{flex: 1, marginTop: 50}}>
-          {trip.routes.map((route, i)=>{
-            return (
-              <View key={route._id} style={{flex:1, flexDirection:'row', marginTop: -10, marginBottom: 20, justifyContent: 'center'}}>
-                <View style={{flexDirection:'column', width: 200}}>
-                  <Text style={{fontWeight: 'bold', fontSize: 16, color: '#3D73DD'}}>{i=== 0 ? `Titik Mulai` : `Titik ${i}`}</Text>
-                  <View>
-                    <Text style={{fontSize:14, color: 'grey'}}>{route.address}</Text>
-                </View>
-                </View>
-                <View style={{alignSelf: 'center', marginLeft: 20}}>
-                  <Button
-                  disabled = {route.status === 'arrived' ? true : false}
-                  disabledStyle = {{
-                    backgroundColor: 'white',
-                  }}
-
-                  icon = { route.status === 'arrived' ? (
-                    <Icon
-                    name="check-circle"
-                    size={20}
-                    color="#30CB00"
-                    />
-                  ) : null
-                  }
-                  title={ route.status==='arrived'? ' selesai' : "ongoing"}
-                  buttonStyle={{
-                    backgroundColor: route.status==='arrived'? '#30CB00' : '#3D73DD'
-                  }}
-                  onPress={()=>{
-                    if(i===0){
-                      const date = new Date()
-                      const hours = date.getHours();
-                      const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
-                      const time = hours + ':' + minutes;
-                      // console.log(time)
-                      editRoute({
-                        variables:{
-                          userId: user.id,
-                          routeId: route._id,
-                          status: 'arrived',
-                          arrivedAt: time
-                        }
-                      })
-                    } else if(trip.routes[i-1].status === 'arrived'){
-                      const date = new Date()
-                      const hours = date.getHours();
-                      const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
-                      const time = hours + ':' + minutes;
-                      editRoute({
-                        variables:{
-                          userId: user.id,
-                          routeId: route._id,
-                          status: 'arrived',
-                          arrivedAt: time
-                        }
-                      })
-                      
-                      if(i === trip.routes.length-1){
-                        EditTripSuccess({
-                          variables:{
-                            tripId: trip._id,
-                            status: true
-                          }
-                        })
+          {trip.routes && (
+            <View>
+              {trip.routes.map((route, i)=>{
+                return (
+                  <View key={route._id} style={{flex:1, flexDirection:'row', marginTop: -10, marginBottom: 20, justifyContent: 'center'}}>
+                    <View style={{flexDirection:'column', width: 200}}>
+                      <Text style={{fontWeight: 'bold', fontSize: 16, color: '#3D73DD'}}>{i=== 0 ? `Titik Mulai` : `Titik ${i}`}</Text>
+                      <View>
+                        <Text style={{fontSize:14, color: 'grey'}}>{route.address}</Text>
+                    </View>
+                    </View>
+                    <View style={{alignSelf: 'center', marginLeft: 20}}>
+                      <Button
+                      disabled = {route.status === 'arrived' ? true : false}
+                      disabledStyle = {{
+                        backgroundColor: 'white',
+                      }}
+    
+                      icon = { route.status === 'arrived' ? (
+                        <Icon
+                        name="check-circle"
+                        size={20}
+                        color="#30CB00"
+                        />
+                      ) : null
                       }
-                    } else{
-                      console.log('sebelumnya belum tuh')
-                    }
-                  }}/>
-                </View>
-              </View>
-              )
-            })}    
+                      title={ route.status==='arrived'? ' selesai' : "ongoing"}
+                      buttonStyle={{
+                        backgroundColor: route.status==='arrived'? '#30CB00' : '#3D73DD'
+                      }}
+                      onPress={()=> onPress(i, route._id)}/>
+                    </View>
+                  </View>
+                  )
+                })}    
+            </View>
+          )}
           </View>
         </View>
       

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import Maps from './pages/Maps'
 import AllTrips from './pages/AllTrips'
 import Login from './pages/Login'
@@ -9,11 +9,10 @@ import CurrentTimeline from './pages/CurrentTimeline'
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
 import {ApolloProvider} from '@apollo/client'
-import client from './config'
+import client, {myToken} from './config'
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
-import {myToken} from './config'
 
 async function registerForPushNotificationsAsync() {
   let token;
@@ -76,7 +75,7 @@ export default function App(){
       Notifications.removeNotificationSubscription(notificationListener);
       Notifications.removeNotificationSubscription(responseListener);
     };
-  }, []);
+  }, [registerForPushNotificationsAsync]);
 
   const Stack = createStackNavigator()
   return (

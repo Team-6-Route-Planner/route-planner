@@ -68,7 +68,7 @@ export default ({navigation}) => {
     },
     pollInterval: 500,
     onCompleted: (data) =>{
-      console.log(historyTrips)
+      // console.log(historyTrips)
       // if(data.getCurrentTrip){
         myOngoingTrip(data.getCurrentTrip)
       // } else{

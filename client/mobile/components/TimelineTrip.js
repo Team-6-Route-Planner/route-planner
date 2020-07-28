@@ -7,19 +7,13 @@ export default ({trip}) => {
     if(i===0){
       return {
         time: point.arrivedAt,
-        title: 'Start',
-        description: point.address
-      }
-    } else if(i === trip.routes.length - 1){
-      return {
-        time: point.arrivedAt,
-        title: 'End',
+        title: 'Titik Mulai',
         description: point.address
       }
     } else{
       return {
         time: point.arrivedAt,
-        title: `Waypoint ${i}`,
+        title: `Titik ${i}`,
         description: point.address
       }
     }
