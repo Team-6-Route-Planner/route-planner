@@ -49,7 +49,7 @@ export default function Track() {
 
   return (
     <>
-      {JSON.stringify(data)}
+      {/* {JSON.stringify(data)} */}
       <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
         <GoogleMap
           mapContainerStyle={mapStyles}
