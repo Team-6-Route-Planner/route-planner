@@ -59,23 +59,23 @@ export default function App(){
   const notificationListener = useRef();
   const responseListener = useRef();
   useEffect(() => {
-    // registerForPushNotificationsAsync().then(token => myToken(token));
+    registerForPushNotificationsAsync().then(token => myToken(token));
 
-    // // // This listener is fired whenever a notification is received while the app is foregrounded
-    // // notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-    // //   setNotification(notification);
-    // // });
-
-    // // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-    // responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-    //   console.log(response);
+    // // This listener is fired whenever a notification is received while the app is foregrounded
+    // notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+    //   setNotification(notification);
     // });
 
-    // return () => {
-    //   Notifications.removeNotificationSubscription(notificationListener);
-    //   Notifications.removeNotificationSubscription(responseListener);
-    // };
-  }, []);
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener);
+      Notifications.removeNotificationSubscription(responseListener);
+    };
+  }, [registerForPushNotificationsAsync]);
 
   const Stack = createStackNavigator()
   return (

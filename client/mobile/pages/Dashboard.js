@@ -78,11 +78,13 @@ export default ({navigation}) => {
 
   // myTrips([...trip])
   useEffect(()=>{
-    const array = [].concat(historyTrips.getHistory).reverse()
-    setAllTrips(array)
-    myTrips([...array])
+    if(historyTrips){
+      const array = [].concat(historyTrips.getHistory).reverse()
+      setAllTrips(array)
+      myTrips([...array])
+    }
     return ()=>{}
-  },[historyTrips.getHistory])
+  },[historyTrips])
 
   if(loading || loadingCurrentTrip || loadingHistoryTrips){
     return (

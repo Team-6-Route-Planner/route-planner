@@ -7,8 +7,8 @@ import {gql, useMutation} from '@apollo/client'
 import {myUser, myToken} from '../config'
 
 const LOGIN = gql`
-  mutation Login($username: String, $password: String){
-    login(username: $username, password: $password){
+  mutation Login($username: String, $password: String, $deviceToken: String){
+    login(username: $username, password: $password, deviceToken: $deviceToken){
       id:_id
       name:username
     }
@@ -35,7 +35,6 @@ export default ({navigation}) => {
     loginCheck({
       variables:{
         username:name,
-<<<<<<< HEAD
         password,
         deviceToken: token
       }
@@ -43,14 +42,6 @@ export default ({navigation}) => {
     // .then(_=>{
       // navigation.navigate('Dashboard') // temporary
     // })
-=======
-        password
-      }
-    })
-    .then(_=>{
-      navigation.navigate('Dashboard') // temporary
-    })
->>>>>>> token-server
   }
 
   return (
