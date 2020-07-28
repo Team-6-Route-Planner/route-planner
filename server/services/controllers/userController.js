@@ -21,7 +21,7 @@ class Controller {
   }
   static login(req, res, next) {
     const { username, password } = req.body;
-    console.log(req.body.deviceToken)
+    // console.log(req.body.deviceToken)
     let user;
     User.findOne(username)
       .then((data) => {

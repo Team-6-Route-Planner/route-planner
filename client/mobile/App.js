@@ -27,13 +27,16 @@ async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
+    // console.log(token);
   } else {
     alert('Must use physical device for Push Notifications');
   }
 
   if (Platform.OS === 'android') {
     Notifications.setNotificationChannelAsync('default', {
+      sound: true,
+      priority: 'max',
+      vibrate: [0, 250, 250, 250],
       name: 'default',
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
@@ -53,7 +56,7 @@ Notifications.setNotificationHandler({
 });
 
 export default function App(){
-  // console.disableYellowBox = true;
+  console.disableYellowBox = true;
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();

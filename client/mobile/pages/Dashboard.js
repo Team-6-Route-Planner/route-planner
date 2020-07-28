@@ -5,6 +5,7 @@ import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
 import {gql, useQuery} from '@apollo/client'
 import {myTrips, myUser, myOngoingTrip} from '../config'
 import changeDate from '../helpers/changeDate'
+import {Button} from 'react-native-elements'
 
 const GET_USER = gql`
   query{
@@ -102,6 +103,31 @@ export default ({navigation}) => {
     <ScrollView style={styles.container}>
       <GeneralStatusBarColor backgroundColor="#3D73DD"
       barStyle="light-content"/>
+      <View style={{
+        position: 'absolute',
+        height: 100,
+        width: 100,
+        top: 50,
+        flex: 0,
+        right: 30,
+        bottom: 10,
+        zIndex: 20
+      }}>
+        <Button
+          buttonStyle={{
+            backgroundColor: '#EE1234',
+            borderRadius: 50,
+          }}
+          titleStyle={{
+            fontSize: 16
+          }}
+          iconRight
+          title="Logout"
+          onPress={()=>{
+            navigation.navigate('Login')
+          }}
+          />
+      </View>
       <View style = {styles.greetingsBox}>
         <Image style={{
           height: 70,

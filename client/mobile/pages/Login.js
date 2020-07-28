@@ -24,9 +24,9 @@ export default ({navigation}) => {
   const [loginCheck] = useMutation(LOGIN,{
     onCompleted: (data)=>{
       myUser(data.login)
+      navigation.navigate('Dashboard')
       setName('')
       setPassword('')
-      navigation.navigate('Dashboard')
     },
     onError(err){
       console.log(err)
@@ -34,15 +34,15 @@ export default ({navigation}) => {
   })
 
   const onPress = () =>{
-    // loginCheck({
-    //   variables:{
-    //     username:name,
-    //     password,
-    //     deviceToken: token
-    //   }
-    // })
+    loginCheck({
+      variables:{
+        username:name,
+        password,
+        deviceToken: token
+      }
+    })
     // .then(_=>{
-      navigation.navigate('Dashboard') // temporary
+      // navigation.navigate('Dashboard') // temporary
     // })
   }
 
@@ -58,11 +58,13 @@ export default ({navigation}) => {
         
         <TextInput 
         style={styles.inputText}
+        value={name}
         onChangeText={text=> setName(text)} />
         <Text style={{color: '#3D73DD', fontSize:18, fontWeight: 'bold', marginBottom: -5}}>password</Text>
         
         <TextInput
         secureTextEntry
+        value={password}
         // textContentType="password" 
         style={styles.inputText}
         onChangeText={text=> setPassword(text)} />

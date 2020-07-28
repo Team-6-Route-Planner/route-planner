@@ -6,6 +6,7 @@ import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import {gql, useMutation} from '@apollo/client'
 import Back from '../components/Back'
 import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
+import CurrentLocation from '../components/CurrentLocation'
 const API_KEY = 'AIzaSyCyNsE0LjFJCgGeT4sJoQFsVZmrCXaw79o'
 
 const SEND_POSITION_INTERVAL = gql`
@@ -73,12 +74,17 @@ export default ({route, navigation}) => {
     navigator.geolocation.getCurrentPosition(
       ({coords: {latitude, longitude}})=> {
         // console.log(latitude, longitude)
-        setMyPosition({latitude,longitude})
+        setMyPosition({
+          latitude,
+          longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0922 * width/height,
+        })
         updateMyPosition({
           variables: {
             userId: currentTrip.userId,
             lat: latitude,
-            lng: longitude
+            lng: longitude,
           }
         })
       },
@@ -98,6 +104,10 @@ export default ({route, navigation}) => {
     return ()=> {}
   },[])
 
+  const centerMap = (myCurrentPosition) => {
+    mapView.animateToRegion(myCurrentPosition)
+  }
+
 
   return (
     <View style={styles.container}>
@@ -106,17 +116,17 @@ export default ({route, navigation}) => {
       <Back navigation={navigation} color='#3D73DD' isMap = {true} />
       {myPosition.latitude && (
         <View>
+          <CurrentLocation currentLocation = {()=> centerMap(myPosition)} />
           <MapView
           showsUserLocation
           style={styles.mapStyle}
           initialRegion={{
             latitude: myPosition.latitude,
             longitude: myPosition.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: LONGITUDE_DELTA,
+            latitudeDelta: myPosition.latitudeDelta,
+            longitudeDelta: myPosition.longitudeDelta,
           }}
-          ref={c =>setMapView(c)}
-          showsMyLocationButton={true}>
+          ref={c =>setMapView(c)}>
             <Marker
               pinColor = {currentTrip.routes[0].status === 'arrived' ? 'green' : 'yellow'}
               coordinate={{
