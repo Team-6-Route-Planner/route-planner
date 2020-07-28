@@ -94,8 +94,6 @@ export default ({navigation}) => {
     return <Text>Error...</Text>
   }
 
-  const totalTrips = currentTrip.getCurrentTrip ? allHistoryTrips.trips.length + 1 : allHistoryTrips.trips.length;
-
   return (
     <ScrollView style={styles.container}>
       <GeneralStatusBarColor backgroundColor="#3D73DD"
@@ -161,7 +159,29 @@ export default ({navigation}) => {
               </View>
             ) : (
               <View>
-                <Text style={{fontSize: 20}}>No trip.</Text>
+                <View style={{flexDirection: 'row'}}>
+                <Icon
+                style
+                name="truck"
+                size={100}
+                color={'#3D73DD'}
+                />
+                <View style={{
+                  marginHorizontal: 20,
+                  flexDirection: 'column',
+                  alignItems:'center',
+                  justifyContent: 'center',
+                  flexWrap: 'wrap'
+                }}>
+                  <Text style={{
+                    color: '#3D73DD',
+                    fontSize: 25,
+                    width: 150,
+                    fontWeight: 'bold',
+                    textAlign: 'center'
+                  }}>Belum Ada Order</Text>
+                </View>
+              </View>
               </View>
             ) }
           </View>

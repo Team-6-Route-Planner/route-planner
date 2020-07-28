@@ -1,8 +1,8 @@
 import {ApolloClient, InMemoryCache, makeVar} from '@apollo/client'
 
 export const myUser = makeVar({
-  id: "5f1c46050480aa0638d44e62",
-  name: "Bambang"
+  // id: "5f1c46050480aa0638d44e62",
+  // name: "Bambang"
 })
 
 export const myTrips = makeVar([])

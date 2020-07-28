@@ -30,14 +30,14 @@ export default ({navigation}) => {
   })
 
   const onPress = () =>{
-    // loginCheck({
-    //   variables:{
-    //     username:name,
-    //     password
-    //   }
-    // })
+    loginCheck({
+      variables:{
+        username:name,
+        password
+      }
+    })
     // .then(_=>{
-      navigation.navigate('Dashboard') // temporary
+      // navigation.navigate('Dashboard') // temporary
     // })
   }
 

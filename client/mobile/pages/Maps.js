@@ -6,7 +6,6 @@ import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import {gql, useMutation} from '@apollo/client'
 import Back from '../components/Back'
 import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
-import useInterval from '../components/useInterval'
 const API_KEY = 'AIzaSyCyNsE0LjFJCgGeT4sJoQFsVZmrCXaw79o'
 
 const SEND_POSITION_INTERVAL = gql`
