@@ -21,6 +21,7 @@ class Controller {
   }
   static login(req, res, next) {
     const { username, password } = req.body;
+    console.log(req.body.deviceToken)
     let user;
     User.findOne(username)
       .then((data) => {
@@ -38,9 +39,9 @@ class Controller {
           );
           user = data;
           return User.update(data._id, { deviceToken: req.body.deviceToken })
-          
         }
       })
+
       .then(data => {
         res.status(200).json({
           message: "Login success",

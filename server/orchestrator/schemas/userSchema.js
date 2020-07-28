@@ -64,6 +64,7 @@ const resolvers = {
     },
     login: (_, args) => {
       const { username, password, deviceToken } = args;
+      console.log(deviceToken)
       return axios({
         method: "post",
         url: `${baseUrl}/login`,
