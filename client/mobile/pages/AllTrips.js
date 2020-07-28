@@ -51,22 +51,24 @@ const GET_ONGOING_TRIPS = gql`
 
 export default ({navigation}) => {
   const user = myUser()
-  const {loading, data:allHistoryTrips, error} = useQuery(GET_HISTORY_TRIPS,{
-    variables: {
-      UserId: user.id
-    },
-    onCompleted: (data) =>{
-      myTrips([...data.getHistory])
-    },
-    pollInterval: 500
-  })
+  // const {loading, data:allHistoryTrips, error} = useQuery(GET_HISTORY_TRIPS,{
+  //   variables: {
+  //     UserId: user.id
+  //   },
+  //   onCompleted: (data) =>{
+  //     myTrips([...data.getHistory])
+  //   },
+  //   pollInterval: 500
+  // })
+
+  const {data: historyTrips, loading, error} = useQuery(GET_TRIPS)
   const {data: ongoingTrip} = useQuery(GET_CURRENT_TRIPS,{
     variables: {
       UserId: user.id
     },
     pollInterval: 500,
     onCompleted: (data) =>{
-      // console.log(data.getCurrentTrip)
+      console.log(historyTrips)
       // if(data.getCurrentTrip){
         myOngoingTrip(data.getCurrentTrip)
       // } else{
@@ -85,14 +87,6 @@ export default ({navigation}) => {
 
   if(error){
     return <Text>Error...</Text>
-  }
-
-  const renderItem = (data, index) => {
-    return (
-      <View style={styles.cardBox}>
-        <Text style={{color: '#3D73DD', fontSize: 20}}>{data.item.name}</Text>
-      </View>
-    )
   }
 
   return (
@@ -126,24 +120,28 @@ export default ({navigation}) => {
             </View>
           </TouchableNativeFeedback>
         )}
-        {allHistoryTrips.getHistory.map((trip, i)=>{
-          return (
-            <TouchableNativeFeedback key={i}
-            onPress={()=>navigation.navigate('Detail Trip', {trip})}>
-              <View style={styles.cardBox}>
-                <Icon
-                name="check-circle"
-                size={40}
-                color="#30CB00"
-                />
-                <View style={{flexDirection:'column', alignItems: 'flex-end'}}>
-                  <Text style={{color: '#3D73DD', fontSize: 20}}>{changeDate(trip.startedAt)}</Text>
-                  <Text style={{color: 'grey', fontSize: 15}}>Waktu Selesai: {trip.routes[trip.routes.length-1].arrivedAt}</Text>
-                </View>
-              </View>
-            </TouchableNativeFeedback>
-          )
-        })}
+        {historyTrips && (
+          <View>
+            {historyTrips.trips.map((trip, i)=>{
+              return (
+                <TouchableNativeFeedback key={i}
+                onPress={()=>navigation.navigate('Detail Trip', {trip})}>
+                  <View style={styles.cardBox}>
+                    <Icon
+                    name="check-circle"
+                    size={40}
+                    color="#30CB00"
+                    />
+                    <View style={{flexDirection:'column', alignItems: 'flex-end'}}>
+                      <Text style={{color: '#3D73DD', fontSize: 20}}>{changeDate(trip.startedAt)}</Text>
+                      <Text style={{color: 'grey', fontSize: 15}}>Waktu Selesai: {trip.routes[trip.routes.length-1].arrivedAt}</Text>
+                    </View>
+                  </View>
+                </TouchableNativeFeedback>
+              )
+            })}
+          </View>
+        )}
       </View>
     </ScrollView>
   )

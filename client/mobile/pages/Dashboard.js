@@ -55,7 +55,8 @@ export default ({navigation}) => {
       UserId: user.id
     },
     onCompleted: (data) =>{
-      myTrips([...data.getHistory])
+      const array = [].concat(data.getHistory).reverse()
+      myTrips([...array])
     },
     pollInterval: 500
   })
@@ -75,6 +76,10 @@ export default ({navigation}) => {
   
   const {loading:loadingTrips, data:allHistoryTrips} = useQuery(GET_TRIPS,{
     pollInterval: 500
+  })
+
+  const {data: allTrips} = useQuery(GET_TRIPS, {
+    pollInterval: 500,
   })
 
   // myTrips([...trip])
@@ -224,7 +229,7 @@ export default ({navigation}) => {
             </View>
           </TouchableNativeFeedback>
         ) }
-        {historyTrips.getHistory.map((trip, i)=>{
+        {allTrips.trips.map((trip, i)=>{
           if(i<=2){
             return (
               <TouchableNativeFeedback
