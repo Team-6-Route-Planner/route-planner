@@ -37,8 +37,6 @@ class Controller {
       })
     })
     .then(data => {
-      // Controller.pushNotification(userId); // belum diaplikasikan
-      
       dataTrip = data.ops[0];
       return User.findByPk(data.ops[0].userId)
     })
