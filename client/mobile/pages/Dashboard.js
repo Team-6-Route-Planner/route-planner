@@ -73,21 +73,18 @@ export default ({navigation}) => {
     },
     pollInterval: 500
   })
-  
-  const {loading:loadingTrips, data:allHistoryTrips} = useQuery(GET_TRIPS,{
-    pollInterval: 500
-  })
 
-  const {data: allTrips} = useQuery(GET_TRIPS, {
-    pollInterval: 500,
-  })
+  const [allTrips, setAllTrips] = useState([])
 
   // myTrips([...trip])
   useEffect(()=>{
+    const array = [].concat(historyTrips.getHistory).reverse()
+    setAllTrips(array)
+    myTrips([...array])
     return ()=>{}
-  },[])
+  },[historyTrips.getHistory])
 
-  if(loading || loadingCurrentTrip || loadingTrips || loadingHistoryTrips){
+  if(loading || loadingCurrentTrip || loadingHistoryTrips){
     return (
       <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
         <Text>Loading...</Text>
@@ -229,7 +226,7 @@ export default ({navigation}) => {
             </View>
           </TouchableNativeFeedback>
         ) }
-        {allTrips.trips.map((trip, i)=>{
+        {allTrips.map((trip, i)=>{
           if(i<=2){
             return (
               <TouchableNativeFeedback
