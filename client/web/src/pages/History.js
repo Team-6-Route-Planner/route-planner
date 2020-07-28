@@ -13,6 +13,7 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
+import { Container } from "react-bootstrap";
 
 const useStyles = makeStyles({
   root: {
@@ -97,6 +98,17 @@ export default function CustomizedAccordions() {
   return (
     <div>
       {/* {JSON.stringify(data)} */}
+      {!data.getHistory.length && (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+        >
+          <img src="https://image.freepik.com/free-vector/men-got-boring-nothing-by-checking-his-gadget_10045-598.jpg" />
+        </div>
+      )}
       {data.getHistory.map((trip) => {
         return (
           <Accordion
@@ -122,10 +134,6 @@ export default function CustomizedAccordions() {
                 <ul style={{ listStyle: "none" }}>
                   {trip.routes.map((route) => {
                     return (
-                      //   <li>
-                      //     <CheckCircleRoundedIcon style={{ color: green[500] }} />
-                      //     {route.address}
-                      //   </li>
                       <Card className={classes.root} style={{ marginTop: 15 }}>
                         <CardContent>
                           <Typography variant="h5" component="h2">
