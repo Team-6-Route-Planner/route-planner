@@ -1,11 +1,21 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-export default ({navigation, color}) => {
+
+export default ({navigation, color, isMap}) => {
   return (
-    <View style={styles.container}>
+    <View style={{
+      position: 'absolute',
+      height: 50,
+      width: 50,
+      top: isMap ? 75 : 30,
+      flex: 0, 
+      left: 20,
+      right: 0,
+      bottom: 0,
+      zIndex: 20
+    }}>
         <Icon
-        style
         name="arrow-circle-left"
         size={40}
         color={color}
@@ -14,17 +24,3 @@ export default ({navigation, color}) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container:{
-    position: 'absolute',
-    height: 50,
-    width: 50,
-    flex: 0, 
-    top: 30,
-    left: 20,
-    right: 0,
-    bottom: 0,
-    zIndex: 20
-  }
-})

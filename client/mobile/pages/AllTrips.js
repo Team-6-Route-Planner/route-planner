@@ -35,17 +35,11 @@ const GET_CURRENT_TRIPS = gql`
   query GetCurrentTripsById($UserId: String){
     getCurrentTrip(userId: $UserId){
       _id
-      routes {lat lng address status arrivedAt}
+      routes {_id lat lng address status arrivedAt}
       status
       userId
       startedAt
     }
-  }
-`
-
-const GET_ONGOING_TRIPS = gql`
-  query{
-    ongoingTrips @client
   }
 `
 
@@ -67,14 +61,6 @@ export default ({navigation}) => {
       UserId: user.id
     },
     pollInterval: 500,
-    onCompleted: (data) =>{
-      // console.log(historyTrips)
-      // if(data.getCurrentTrip){
-        myOngoingTrip(data.getCurrentTrip)
-      // } else{
-        // myOngoingTrip(null)
-      // }
-    },
   })
 
   useEffect(()=>{
@@ -106,7 +92,7 @@ export default ({navigation}) => {
       <View style={{marginTop: 20}}>
         {ongoingTrip.getCurrentTrip && (
           <TouchableNativeFeedback
-          onPress={()=>navigation.navigate('Maps', {currentTrip: ongoingTrip.getCurrentTrip})}>
+          onPress={()=>navigation.navigate('Current Timeline', {trip: ongoingTrip.getCurrentTrip})}>
             <View style={styles.cardBox}>
                 <Icon
               name="exclamation-circle"
@@ -114,7 +100,7 @@ export default ({navigation}) => {
               color="#EE1234"
               />
               <View style={{flexDirection:'column', alignItems: 'flex-end'}}>
-                <Text style={{color: '#3D73DD', fontSize: 20}}>22 Juli 2020</Text>
+                <Text style={{color: '#3D73DD', fontSize: 20}}>{changeDate(ongoingTrip.getCurrentTrip.startedAt)}</Text>
                 <Text style={{color: '#EE1234', fontSize: 15}}>Perjalanan belum selesai!</Text>
               </View>
             </View>

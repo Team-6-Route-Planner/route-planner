@@ -43,7 +43,7 @@ class Controller {
     })
 
     .then(data => {
-      Controller.sendPushNotification(data.deviceToken);
+      Controller.sendPushNotification(data.deviceToken, data.username);
       res.status(200).json(dataTrip);
     })
 
@@ -90,26 +90,23 @@ class Controller {
     .catch(console.log);
   }
 
-  static async sendPushNotification (expoPushToken) {
+  static async sendPushNotification (expoPushToken, username) {
     try{ 
       const message = {
         to: expoPushToken,
         sound: 'default',
-        title: 'Original Title',
-        body: 'And here is the body!',
+        title: `Ada Tugas Baru Untuk Kamu, ${username}!`,
+        body: 'Segera lihat aplikasi kamu!',
         data: { data: 'goes here' },
       };
     
-      await axios({
-        method: 'POST',
-        url: 'https://exp.host/--/api/v2/push/send',
+      await axios.post('https://exp.host/--/api/v2/push/send',JSON.stringify(message), {
         headers: {
           host: 'exp.host',
           accept: 'application/json',
           'accept-encoding': 'gzip, deflate',
           'content-Type': 'application/json',
         },
-        body: JSON.stringify(message),
       });
     }catch(err){
       console.log(err)

@@ -132,12 +132,14 @@ export default ({navigation}) => {
           <View style ={styles.statusBox}>
             {currentTrip.getCurrentTrip ? (
               <View style={{flexDirection: 'row'}}>
-                <Icon
-                style
-                name="truck"
-                size={100}
-                color={'#3D73DD'}
-                />
+                <Image style={{
+                  height: 120,
+                  width: 100,
+                  marginTop: 10,
+                  marginBottom: 5,
+                  marginLeft: 5,
+                  borderRadius: 40
+                }} source={require('../assets/on-delivery.png')} />
                 <View style={{
                   marginHorizontal: 20,
                   flexDirection: 'column',
@@ -150,11 +152,11 @@ export default ({navigation}) => {
                     fontSize: 25,
                     width: 150,
                     fontWeight: 'bold',
-                    textAlign: 'center'
+                    textAlign: 'left'
                   }}>Order Masuk!</Text>
                   <Text style={{
-                    width: 100,
-                    textAlign: 'center',
+                    width: 150,
+                    textAlign: 'left',
                     fontSize: 13,
                     color: '#EE1234',
                     flexWrap: 'wrap'
@@ -164,14 +166,16 @@ export default ({navigation}) => {
             ) : (
               <View>
                 <View style={{flexDirection: 'row'}}>
-                <Icon
-                style
-                name="truck"
-                size={100}
-                color={'#3D73DD'}
-                />
+                <Image style={{
+                  height: 120,
+                  width: 100,
+                  marginBottom: 5,
+                  marginLeft: 5,
+                  borderRadius: 100
+                }} source={require('../assets/nothing.png')} />
                 <View style={{
-                  marginHorizontal: 20,
+                  marginRight: 20,
+                  marginLeft: 10,
                   flexDirection: 'column',
                   alignItems:'center',
                   justifyContent: 'center',
@@ -180,9 +184,9 @@ export default ({navigation}) => {
                   <Text style={{
                     color: '#3D73DD',
                     fontSize: 25,
-                    width: 150,
+                    width: 145,
                     fontWeight: 'bold',
-                    textAlign: 'center'
+                    textAlign: 'left'
                   }}>Belum Ada Order</Text>
                 </View>
               </View>
@@ -214,7 +218,7 @@ export default ({navigation}) => {
         {currentTrip.getCurrentTrip && (
           <TouchableNativeFeedback
           // onPress={()=>navigation.navigate('Maps', {currentTrip: currentTrip.getCurrentTrip})}
-          onPress={()=>navigation.navigate('Current Timeline (temporary)', {trip: currentTrip.getCurrentTrip})}>
+          onPress={()=>navigation.navigate('Current Timeline', {trip: currentTrip.getCurrentTrip})}>
             <View style={styles.cardBox}>
                 <Icon
               name="exclamation-circle"
@@ -278,6 +282,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     flex: 0,
     alignSelf: 'center',
+    justifyContent: 'center',
     marginTop: 20,
     marginBottom: -80,
     borderRadius: 30,

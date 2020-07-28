@@ -5,7 +5,6 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import DetailTrip from './pages/DetailTrip'
 import CurrentTimeline from './pages/CurrentTimeline'
-// import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
 import {ApolloProvider} from '@apollo/client'
@@ -87,7 +86,7 @@ export default function App(){
             <Stack.Screen name="Maps" component={Maps} />
             <Stack.Screen name="All Trips" component={AllTrips} />
             <Stack.Screen name="Detail Trip" component={DetailTrip} />
-            <Stack.Screen name="Current Timeline (temporary)" component={CurrentTimeline} />
+            <Stack.Screen name="Current Timeline" component={CurrentTimeline} />
         </Stack.Navigator>
       </NavigationContainer>
     </ApolloProvider>

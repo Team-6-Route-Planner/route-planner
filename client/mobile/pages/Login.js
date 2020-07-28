@@ -24,6 +24,8 @@ export default ({navigation}) => {
   const [loginCheck] = useMutation(LOGIN,{
     onCompleted: (data)=>{
       myUser(data.login)
+      setName('')
+      setPassword('')
       navigation.navigate('Dashboard')
     },
     onError(err){
@@ -32,15 +34,15 @@ export default ({navigation}) => {
   })
 
   const onPress = () =>{
-    loginCheck({
-      variables:{
-        username:name,
-        password,
-        deviceToken: token
-      }
-    })
+    // loginCheck({
+    //   variables:{
+    //     username:name,
+    //     password,
+    //     deviceToken: token
+    //   }
+    // })
     // .then(_=>{
-      // navigation.navigate('Dashboard') // temporary
+      navigation.navigate('Dashboard') // temporary
     // })
   }
 
