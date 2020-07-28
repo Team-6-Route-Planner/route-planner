@@ -5,6 +5,8 @@ export const myUser = makeVar({
   // name: "Bambang"
 })
 
+export const myToken = makeVar(null)
+
 export const myTrips = makeVar([])
 export const myOngoingTrip = makeVar(null)
 
@@ -12,6 +14,11 @@ const cache = new InMemoryCache({
   typePolicies:{
     Query:{
       fields:{
+        token:{
+          read(){
+            return myToken()
+          }
+        },
         user:{
           read(){
             return myUser()
