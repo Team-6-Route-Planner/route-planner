@@ -2,9 +2,11 @@ import React, {useState, useEffect} from 'react';
 import MapView, {Marker, Callout} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions'
 import * as Permissions from 'expo-permissions'
-import { StyleSheet, Text, View, Dimensions, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import {gql, useMutation} from '@apollo/client'
+import Back from '../components/Back'
 import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
+import useInterval from '../components/useInterval'
 const API_KEY = 'AIzaSyCyNsE0LjFJCgGeT4sJoQFsVZmrCXaw79o'
 
 const SEND_POSITION_INTERVAL = gql`
@@ -23,7 +25,7 @@ const SEND_POSITION_INTERVAL = gql`
 `
 
 
-export default ({route}) => {
+export default ({route, navigation}) => {
   const {currentTrip} = route.params
   const [myPosition, setMyPosition] = useState({
     latitude: null,
@@ -79,18 +81,24 @@ export default ({route}) => {
     )
   }
 
+  // useInterval(()=>{
+  //   getPosition()
+  // }, 1000)
+
   useEffect(()=>{
     getPosition()
-    const abortController = new AbortController()
-
-    return ()=> {abortController.abort()}
   },[getPosition])
+
+  useEffect(()=>{
+    return ()=> {}
+  },[])
 
 
   return (
     <View style={styles.container}>
       <GeneralStatusBarColor backgroundColor="#3D73DD"
       barStyle="light-content"/>
+      <Back navigation={navigation} color='#3D73DD'/>
       {myPosition.latitude && (
         <View>
           <MapView
@@ -142,7 +150,7 @@ export default ({route}) => {
               waypoints = {waypoint()}
               apikey={API_KEY}
               strokeWidth={4}
-              strokeColor="blue"
+              strokeColor="#3D73DD"
               // optimizeWaypoints={true}
               onStart={(params) => {
                 console.log(`Started routing between "${params.origin}" and "${params.destination}"`);

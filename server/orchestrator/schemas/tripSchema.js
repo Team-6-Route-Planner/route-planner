@@ -17,6 +17,7 @@ const typeDefs = gql`
         routes: [Route]
         status: Boolean
         userId: String
+        startedAt: String
     }
     extend type Query {
         getCurrentTrip(userId: String): Trip
@@ -84,6 +85,7 @@ const resolvers = {
         },
         editTrip: (_, args) => {
             const { _id, status } = args;
+            console.log(_id)
             return axios({
                 method: 'put',
                 url: `${baseUrl}/${_id}`,

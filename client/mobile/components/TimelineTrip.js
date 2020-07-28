@@ -6,19 +6,19 @@ export default ({trip}) => {
   const modifiedKeyTrip = trip.routes.map((point, i)=>{
     if(i===0){
       return {
-        time: '10:00',
+        time: point.arrivedAt,
         title: 'Start',
         description: point.address
       }
     } else if(i === trip.routes.length - 1){
       return {
-        time: '12:00',
+        time: point.arrivedAt,
         title: 'End',
         description: point.address
       }
     } else{
       return {
-        time: '10:00',
+        time: point.arrivedAt,
         title: `Waypoint ${i}`,
         description: point.address
       }
