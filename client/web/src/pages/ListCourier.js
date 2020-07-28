@@ -1,18 +1,14 @@
 import React from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { Table, Button } from "react-bootstrap";
 import { FETCH_All_USER } from "../queries/trip";
 import { useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import SkipNextIcon from "@material-ui/icons/SkipNext";
 import { Container, Row, Col } from "react-bootstrap";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,7 +57,7 @@ export default function ListCourier() {
 
   return (
     <Container>
-      <Row>
+      <Row style={{ marginTop: 30 }}>
         {data.getAllUser.map((user) => {
           return (
             <Col sm={6} style={{ marginBottom: 20 }}>
@@ -70,7 +66,7 @@ export default function ListCourier() {
                 style={{
                   padding: 10,
                   marginTop: 15,
-                  height: 200,
+                  height: 250,
                   width: 500,
                   display: "flex",
                   flexDirection: "row",
@@ -93,22 +89,51 @@ export default function ListCourier() {
                         fontSize: "20px",
                       }}
                     >
-                      {user.status ? "available" : "on delivery"}
+                      {user.status ? "Tersedia" : "Dalam perjalanan"}
                     </Typography>
-                    <Typography>
+                    <Typography
+                      style={{ display: "flex", flexDirection: "column" }}
+                    >
                       {user.lat && (
                         <Button
-                          variant="outline-info"
-                          style={{ marginRight: 10 }}
+                          variant="contained"
+                          color="primary"
+                          style={{ marginRight: 5, marginBottom: 5 }}
                         >
-                          <Link to={`/track/${user._id}`}>Location</Link>
+                          <Link
+                            to={`/track/${user._id}`}
+                            style={{ color: "white" }}
+                          >
+                            Lokasi Kurir
+                          </Link>
                         </Button>
                       )}
                       {!user.status && (
-                        <Button variant="outline-info">
-                          <Link to={`/detailstrip/${user._id}`}>Details</Link>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          style={{ marginBottom: 5 }}
+                        >
+                          <Link
+                            to={`/detailstrip/${user._id}`}
+                            style={{ color: "white" }}
+                          >
+                            Detail Perjalanan
+                          </Link>
                         </Button>
                       )}
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        style={{ marginRight: 10 }}
+                      >
+                        <Link
+                          to={`/history/${user._id}`}
+                          style={{ color: "white" }}
+                        >
+                          Riwayat Perjalanan
+                        </Link>
+                      </Button>
                     </Typography>
                   </CardContent>
                 </div>
@@ -129,41 +154,3 @@ export default function ListCourier() {
     </Container>
   );
 }
-
-{
-  /* <Table striped bordered hover size="sm" style={tableStyle}>
-<thead>
-  <tr>
-    <th>ID COURIER</th>
-    <th>USERNAME</th>
-    <th>STATUS</th>
-    <th>Action</th>
-  </tr>
-</thead>
-<tbody>
-  {/* {JSON.stringify(data)} */
-}
-//   {data.getAllUser.map((user) => {
-//     return (
-//       <tr key={user._id}>
-//         <td>{user._id}</td>
-//         <td>{user.username}</td>
-//         <td>{user.status ? "available" : "on delivery"}</td>
-//         <td>
-//           {/* {JSON.stringify(user)} */}
-//           {user.lat && (
-//             <Button variant="outline-info">
-//               <Link to={`/track/${user._id}`}>Location</Link>
-//             </Button>
-//           )}
-//           {!user.status && (
-//             <Button variant="outline-info">
-//               <Link to={`/detailstrip/${user._id}`}>Details</Link>
-//             </Button>
-//           )}
-//         </td>
-//       </tr>
-//     );
-//   })}
-// </tbody>
-// </Table> */}

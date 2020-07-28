@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
+import React from "react";
 import { useQuery, from } from "@apollo/client";
 import { DETAILS_TRIP } from "../queries/trip";
 import { useParams, useHistory } from "react-router-dom";
@@ -27,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function History() {
+export default function Details() {
   const classes = useStyles();
 
   const { userId } = useParams();
@@ -49,7 +48,7 @@ export default function History() {
   return (
     <div className="mt-4 flex flex-column justify-content-center">
       <center>
-        <h3 className="mt-4">Details Trip Courier</h3>
+        <h3 className="mt-4">Detail Perjalanan Kurir</h3>
       </center>
       {/* <h3>{JSON.stringify(data)}</h3> */}
       <Timeline align="alternate">
