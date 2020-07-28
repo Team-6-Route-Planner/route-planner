@@ -76,7 +76,7 @@ class Controller {
   static listOne(req, res, next) {
     const { userId } = req.params;
     // console.log(userId);
-    User.findOne(userId)
+    User.findByPk(userId)
       .then((data) => {
         if (data) {
           res.status(200).json(data);

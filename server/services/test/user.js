@@ -114,10 +114,10 @@ describe('SUCCESS PUT LOCATION /:id', function() {
         })
     });
 });
-describe('SUCCESS GET /:username', function() {
+describe('SUCCESS GET /:userId', function() {
     it('responds with data in json', function(done) {
       request(app)
-        .get('/jihad')
+        .get(`/${global.userId}`)
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .then(response => {
@@ -142,10 +142,10 @@ describe('SUCCESS GET /all', function() {
         })
     });
 });
-describe('NOT FOUND /:username', function() {
+describe('NOT FOUND /:userId', function() {
     it('responds with data in json', function(done) {
       request(app)
-        .get('/shouldnotfound')
+        .get('/5f1f7e330ad5b170a218bbd6')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .then(response => {
