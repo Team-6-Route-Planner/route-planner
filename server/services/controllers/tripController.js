@@ -37,17 +37,14 @@ class Controller {
       })
     })
     .then(data => {
-<<<<<<< HEAD
       Controller.sendPushNotification(userId); // belum diaplikasikan
       res.status(201).json(data.ops[0])
-=======
       dataTrip = data.ops[0];
       return User.findByPk(data.ops[0].userId)
     })
     .then(data => {
       Controller.sendPushNotification(data.deviceToken);
       res.status(200).json(dataTrip);
->>>>>>> token-server
     })
     .catch(console.log);
   }
