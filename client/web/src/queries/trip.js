@@ -59,3 +59,22 @@ export const FETCH_All_USER = gql`
     }
   }
 `;
+
+export const GET_HISTORY = gql`
+  query($userId: String) {
+    getHistory(userId: $userId) {
+      _id
+      userId
+      status
+      startedAt
+      routes {
+        address
+        lat
+        lng
+        _id
+        arrivedAt
+        status
+      }
+    }
+  }
+`;

@@ -7,14 +7,9 @@ import { FETCH_USERS } from "../queries/trip.js";
 import Button from "@material-ui/core/Button";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import KeyboardVoiceIcon from "@material-ui/icons/KeyboardVoice";
 import Icon from "@material-ui/core/Icon";
 import SaveIcon from "@material-ui/icons/Save";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import InputBase from "@material-ui/core/InputBase";
 
@@ -125,7 +120,7 @@ export default function Home() {
         className="parallax"
         style={{
           backgroundImage: `url(
-              "https://images.unsplash.com/photo-1585501954837-9d99d09aa2c1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3066&q=80"
+              "https://images.unsplash.com/photo-1580674285054-bed31e145f59?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
             )`,
           height: "80vh",
           width: "100vw",
@@ -139,11 +134,26 @@ export default function Home() {
           justifyContent: "center",
         }}
       >
-        <h3
-          style={{ fontFamily: "MuseoModerno", color: "white", fontSize: 100 }}
+        <div
+          style={{
+            backgroundColor: "rgba(30,144,255, 0.2)",
+            position: "absolute",
+            top: "64px",
+            height: "730px",
+            width: "100%",
+          }}
         >
-          Welcome to Route Master
-        </h3>
+          <h3
+            style={{
+              fontFamily: "MuseoModerno",
+              color: "#f4f6ff",
+              fontSize: 130,
+              textAlign: "center",
+            }}
+          >
+            Selamat Datang di Route Master
+          </h3>
+        </div>
       </div>
       <Container
         style={{
@@ -155,9 +165,14 @@ export default function Home() {
       >
         <div>
           <h3
-            style={{ fontFamily: "MuseoModerno", color: "black", fontSize: 30 }}
+            style={{
+              fontFamily: "MuseoModerno",
+              color: "black",
+              fontSize: 30,
+              marginTop: 50,
+            }}
           >
-            ADD TRIP
+            Tambah Perjalanan
           </h3>
           <Form className="mt-5" onSubmit={submitAdd}>
             <Form.Group as={Row}>
@@ -199,11 +214,13 @@ export default function Home() {
                   style={{ width: 500 }}
                   className={classes.margin}
                   type="text"
-                  value={address}
-                  onChange={changeAddress}
-                  placeholder="e.g: Jl. Kp. Kelapa rt 07/012 Pabuaran, Bojong Gede"
                 >
-                  <BootstrapInput id="demo-customized-textbox" />
+                  <BootstrapInput
+                    id="demo-customized-textbox"
+                    value={address}
+                    onChange={changeAddress}
+                    placeholder="e.g: Jl. Kp. Kelapa rt 07/012 Pabuaran, Bojong Gede"
+                  />
                   <Button
                     onClick={addAddress}
                     variant="contained"
@@ -211,30 +228,21 @@ export default function Home() {
                     className={classes.button}
                     endIcon={<Icon>send</Icon>}
                   >
-                    Add
+                    Tambah
                   </Button>
                 </FormControl>
               </Col>
-              {/* <Col sm="4">
-                <Button
-                  onClick={addAddress}
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  endIcon={<Icon>send</Icon>}
-                ></Button>
-              </Col> */}
             </Form.Group>
 
             <Form.Group as={Row}>
               <Col sm="2"></Col>
-              <Col sm="10">
+              <Col sm="10" style={{ width: 100 }}>
                 {form.addresses.length < 1 ? (
                   <p></p>
                 ) : (
                   form.addresses.map((address, idx) => (
                     <Button
-                      style={{ marginRight: 5 }}
+                      style={{ marginRight: 5, marginBottom: 10 }}
                       variant="contained"
                       color="secondary"
                       className={classes.button}
@@ -249,9 +257,21 @@ export default function Home() {
                     </Button>
                   ))
                 )}
+                <div className="text-center">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    className={classes.button}
+                    startIcon={<SaveIcon />}
+                  >
+                    Tambah Perjalanan
+                  </Button>
+                </div>
               </Col>
             </Form.Group>
-            <div className="text-center">
+            {/* <div className="text-center">
               <Button
                 type="submit"
                 variant="contained"
@@ -260,9 +280,9 @@ export default function Home() {
                 className={classes.button}
                 startIcon={<SaveIcon />}
               >
-                Submit Trip
+                Tambah Perjalanan
               </Button>
-            </div>
+            </div> */}
           </Form>
         </div>
       </Container>

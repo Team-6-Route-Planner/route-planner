@@ -1,13 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Nav, Navbar } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import HomeIcon from "@material-ui/icons/Home";
 import ListIcon from "@material-ui/icons/List";
 
@@ -42,7 +38,7 @@ export default () => {
               to="/"
             >
               <HomeIcon style={{ marginRight: 5 }} />
-              Home
+              Beranda
             </Typography>
           </Link>
           <Link variant="h6" as={Link} to="/listcourier">
@@ -58,7 +54,7 @@ export default () => {
               to="/listcourier"
             >
               <ListIcon style={{ marginRight: 5 }} />
-              List Courier
+              Daftar Kurir
             </Typography>
           </Link>
         </Toolbar>
