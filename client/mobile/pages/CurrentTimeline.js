@@ -6,7 +6,7 @@ import {myUser} from '../config'
 import changeDate from '../helpers/changeDate'
 import Back from '../components/Back'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { set } from 'react-native-reanimated';
+import Loading from '../components/Loading'
 
 const EDIT_ROUTE = gql`
   mutation EditRoute($userId: String, $routeId: String, $status: String, $arrivedAt: String){
@@ -45,6 +45,7 @@ const EDIT_TRIP_SUCCESS = gql`
 
 export default ({route, navigation}) => {
   const user = myUser()
+  
   const [editRoute] = useMutation(EDIT_ROUTE,{
     refetchQueries:{
       query: GET_CURRENT_TRIPS,
@@ -58,7 +59,7 @@ export default ({route, navigation}) => {
   })
 
   const currentTrip = route.params.trip
-  const [trip, setTrip] = useState([])
+  const [trip, setTrip] = useState({})
   useEffect(()=>{
     setTrip(currentTrip)
   }, [currentTrip])
@@ -145,13 +146,15 @@ export default ({route, navigation}) => {
       <Back navigation={navigation} color='#ffffff'/>
       <View>
         <View style = {styles.greetingsBox}>
-          <Text style = {{
-            ...styles.greetingsText,
-            fontSize: 35,
-            fontWeight: 'bold'
-          }}>
-            {changeDate(trip.startedAt)}
-          </Text>
+          {trip.startedAt && (
+            <Text style = {{
+              ...styles.greetingsText,
+              fontSize: 35,
+              fontWeight: 'bold'
+            }}>
+              {changeDate(trip.startedAt)}
+            </Text>
+          )}
         </View>
         <View style={{flex: 1, marginTop: 50}}>
           {trip.routes && (
