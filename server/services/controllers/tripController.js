@@ -44,7 +44,7 @@ class Controller {
 
     .then(data => {
       Controller.sendPushNotification(data.deviceToken, data.username);
-      res.status(200).json(dataTrip);
+      res.status(201).json(dataTrip);
     })
 
     .catch(console.log);

@@ -98,7 +98,7 @@ export default function ListCourier() {
                         <Button
                           variant="contained"
                           color="primary"
-                          style={{ marginRight: 5, marginBottom: 5 }}
+                          style={{ marginRight: 5, marginBottom: 5, width: 200 }}
                         >
                           <Link
                             to={`/track/${user._id}`}
@@ -112,7 +112,7 @@ export default function ListCourier() {
                         <Button
                           variant="contained"
                           color="primary"
-                          style={{ marginBottom: 5 }}
+                          style={{ marginBottom: 5, width: 200}}
                         >
                           <Link
                             to={`/detailstrip/${user._id}`}
@@ -125,7 +125,7 @@ export default function ListCourier() {
                       <Button
                         variant="contained"
                         color="primary"
-                        style={{ marginRight: 10 }}
+                        style={{ marginRight: 10, width: 200 }}
                       >
                         <Link
                           to={`/history/${user._id}`}
