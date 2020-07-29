@@ -90,7 +90,18 @@ export default ({navigation}) => {
   if(loading || loadingCurrentTrip || loadingHistoryTrips){
     return (
       <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-        <Text>Loading...</Text>
+        <View style={{
+          position: 'absolute',
+          top: 100,
+          left:100,
+          right: 100,
+          bottom: 100
+        }}>
+          <Image style={{
+            height: 150,
+            width: 150,
+          }} source={require('../assets/routemaster.png')} />
+        </View>
       </View>
     )
   }

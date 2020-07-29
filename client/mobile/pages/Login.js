@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, View, StyleSheet, Dimensions, TextInput} from 'react-native'
+import {Text, View, StyleSheet, Dimensions, TextInput, Image} from 'react-native'
 import {Button} from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
@@ -50,7 +50,13 @@ export default ({navigation}) => {
     <View style ={styles.container}>
       <GeneralStatusBarColor backgroundColor="#3D73DD"
       barStyle="light-content"/>
-      <Text style={{fontWeight:'bold', fontSize:40, color: 'white', marginBottom: 40}}>Routemaster</Text>
+      <Image style={{
+          // position: 'absolute',
+          height: 150,
+          width: 150,
+          marginBottom: 30,
+        }} source={require('../assets/routemaster.png')} />
+      {/* <Text style={{fontWeight:'bold', fontSize:40, color: 'white', marginBottom: 40}}>Routemaster</Text> */}
       <View style = {styles.box}>
         {/* <Text style={{fontWeight:'bold',textAlign:'center', color: '#3D73DD', fontSize:20, marginBottom: 20}}>LOGIN</Text> */}
         

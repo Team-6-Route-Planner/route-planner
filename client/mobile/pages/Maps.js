@@ -2,11 +2,12 @@ import React, {useState, useEffect} from 'react';
 import MapView, {Marker, Callout} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions'
 import * as Permissions from 'expo-permissions'
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Image } from 'react-native';
 import {gql, useMutation} from '@apollo/client'
 import Back from '../components/Back'
 import GeneralStatusBarColor from '../components/GeneralStatusBarColor'
 import CurrentLocation from '../components/CurrentLocation'
+import Loading from '../components/Loading'
 const API_KEY = 'AIzaSyCyNsE0LjFJCgGeT4sJoQFsVZmrCXaw79o'
 
 const SEND_POSITION_INTERVAL = gql`
@@ -36,6 +37,8 @@ export default ({route, navigation}) => {
     latitude: null,
     longitude: null
   });
+
+  const [loading, setLoading] = useState(true)
 
   const [updateMyPosition] = useMutation(SEND_POSITION_INTERVAL)
 
@@ -74,6 +77,7 @@ export default ({route, navigation}) => {
     navigator.geolocation.getCurrentPosition(
       ({coords: {latitude, longitude}})=> {
         // console.log(latitude, longitude)
+        setLoading(false)
         setMyPosition({
           latitude,
           longitude,
@@ -108,14 +112,20 @@ export default ({route, navigation}) => {
     mapView.animateToRegion(myCurrentPosition)
   }
 
+  if(loading){
+    return (
+      <Loading />
+    )
+  }
+
 
   return (
     <View style={styles.container}>
       <GeneralStatusBarColor backgroundColor="#3D73DD"
       barStyle="light-content"/>
-      <Back navigation={navigation} color='#3D73DD' isMap = {true} />
       {myPosition.latitude && (
         <View>
+          <Back navigation={navigation} color='#3D73DD' isMap = {true} />
           <CurrentLocation currentLocation = {()=> centerMap(myPosition)} />
           <MapView
           showsUserLocation
@@ -176,6 +186,7 @@ export default ({route, navigation}) => {
                 console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
               }}
               onReady={(result)=>{
+                setLoading(false)
                 setDistanceAndDuration({
                   distance: result.distance,
                   duration: result.duration
