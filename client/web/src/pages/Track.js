@@ -31,18 +31,21 @@ export default function Track() {
     marginTop: "30px",
   };
 
-  function addressName(lat, lng) {
-    console.log(lat, lng);
-    fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyDUPeFL6NZ2vTIbI34a7og3FNrpGR3b0cs`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data, "<<<<<<<<<<<<data");
-        // setAddress(data.results ? data.results[0].formatted_address : null);
-        console.log(data.results[0].formatted_address);
-      });
-  }
+  // const addressName = (lat, lng) => {
+  //   console.log(lat, lng)
+  //   fetch(
+  //     `http://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyDUPeFL6NZ2vTIbI34a7og3FNrpGR3b0cs`
+  //   )
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       console.log(data, "<<<<<<<<<<<<data");
+  //       setAddress(data.results ? data.results[0].formatted_address : null);
+  //       console.log(data.results[0].formatted_address);
+  //     })
+  //     .catch(err=>{
+  //       console.log(err)
+  //     })
+  // }
   const onMarkerDragEnd = (e) => {
     const lat = e.latLng.lat();
     const lng = e.latLng.lng();
@@ -71,7 +74,7 @@ export default function Track() {
   return (
     <>
       {/* {JSON.stringify(data)} */}
-      {JSON.stringify(address)}
+      {/* {JSON.stringify(address)} */}
       <div
         style={{
           display: "flex",
