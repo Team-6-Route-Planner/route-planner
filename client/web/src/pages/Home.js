@@ -63,7 +63,7 @@ export default function Home() {
 
   const history = useHistory();
 
-  const { loading, error, data } = useQuery(FETCH_USERS);
+  const { loading, error, data } = useQuery(FETCH_USERS, { pollInterval: 1000 });
 
   const [actionSubmit] = useMutation(ADD_TRIP);
   const [userId, setUserId] = useState("");
